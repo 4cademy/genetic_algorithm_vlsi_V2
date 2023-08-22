@@ -7,3 +7,4 @@
 
 #endif //GENETIC_ALGORITHM_VLSI_V2_INITIALISE_H
 
+void load_data_f1();
