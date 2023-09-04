@@ -8,7 +8,9 @@ unsigned dim = 1000;
 int main() {
     Fitness fitness;
     fitness.debug_print();
+
     // free allocated memory
+    fitness.clean();
     return 0;
 }
 

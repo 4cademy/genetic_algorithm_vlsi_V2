@@ -9,5 +9,6 @@ public:
     explicit Fitness();
     static void debug_print();
     double function1(const double *x);
+    void clean();
 };
 #endif //GENETIC_ALGORITHM_VLSI_V2_FITNESS_H

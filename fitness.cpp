@@ -75,3 +75,7 @@ double Fitness::function1(const double* x) {
     delete[] z;
     return result;
 }
+
+void Fitness::clean() {
+    delete[] opt1;
+}
