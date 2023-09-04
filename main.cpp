@@ -1,10 +1,19 @@
 //
 // Created by Marcel Beyer on 22.08.2023.
 //
-#include "initialise.h"
+namespace initialise {
+    #include "initialise.h"
+}
+#include "fitness.h"
+
+unsigned dim = 1000;
 
 int main() {
-    load_data_f1();
+    auto *fitness = new Fitness(dim);
+
+
+
+    // free allocated memory
     return 0;
 }
 
