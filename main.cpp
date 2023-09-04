@@ -3,9 +3,11 @@
 //
 #include "fitness.h"
 
+unsigned dim = 1000;
+
 int main() {
-    auto *fitness = new Fitness(1000);
-    Fitness::debug_print();
+    Fitness fitness;
+    fitness.debug_print();
     // free allocated memory
     return 0;
 }

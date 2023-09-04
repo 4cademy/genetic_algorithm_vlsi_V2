@@ -6,7 +6,7 @@
 #define GENETIC_ALGORITHM_VLSI_V2_FITNESS_H
 class Fitness {
 public:
-    explicit Fitness(unsigned dimension);
+    explicit Fitness();
     static void debug_print();
     double function1(const double *x);
 };

@@ -9,7 +9,7 @@
 #include <omp.h>
 #include <cmath>
 
-unsigned dim;
+extern unsigned dim;
 double* opt1;
 
 void load_data_f1() {
@@ -29,9 +29,8 @@ void load_data_f1() {
     }
 }
 
-Fitness::Fitness(unsigned dimension){
-    dim = dimension;
-    opt1 = new double[dimension];
+Fitness::Fitness(){
+    opt1 = new double[dim];
     load_data_f1();
 }
 
