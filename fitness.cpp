@@ -1,14 +1,13 @@
 //
 // Created by Marcel Beyer on 04.09.2023.
 //
+#include "fitness.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "fitness.h"
 #include <algorithm>
 #include <omp.h>
 #include <cmath>
-
 
 unsigned dim;
 double* opt1;
@@ -30,14 +29,20 @@ void load_data_f1() {
     }
 }
 
-Fitness::Fitness(unsigned dimension) {
-    Fitness::dim = dimension;
+Fitness::Fitness(unsigned dimension){
+    dim = dimension;
     opt1 = new double[dimension];
-
     load_data_f1();
 }
 
-double function1(const double* x) {
+void Fitness::debug_print() {
+    printf("dim: %d\n", dim);
+    for(int i = 0; i < dim; i++) {
+        printf("opt1[%d]: %f\n", i, opt1[i]);
+    }
+}
+
+double Fitness::function1(const double* x) {
     double result = 0;
     auto* z = new double[dim];
 

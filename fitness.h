@@ -7,8 +7,7 @@
 class Fitness {
 public:
     explicit Fitness(unsigned dimension);
-private:
-    static unsigned dim;
-    static double* opt1;
+    static void debug_print();
+    double function1(const double *x);
 };
 #endif //GENETIC_ALGORITHM_VLSI_V2_FITNESS_H
