@@ -41,7 +41,7 @@ void Fitness::debug_print() {
     }
 }
 
-double Fitness::function1(const double* x) {
+double Fitness::function1(const double* individual) {
     double result = 0;
     auto* z = new double[dim];
 
@@ -50,9 +50,9 @@ double Fitness::function1(const double* x) {
     double c1;
     double c2;
 
-// # pragma omp parallel for default(none) shared(x, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
+// # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
     for(unsigned i = 0; i < dim; i++) {
-        z[i] = x[i] - opt1[i];
+        z[i] = individual[i] - opt1[i];
         // Transformation
         if (z[i] > 0) {
             sign = 1;
