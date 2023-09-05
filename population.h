@@ -8,11 +8,12 @@
 
 class Population {
 public:
-    explicit Population(unsigned pop_size, double min, double max);
+    explicit Population(unsigned dim, unsigned pop_size, double min, double max);
     void debug_print() const;
     void clean() const;
 
 private:
+    unsigned dim;
     unsigned pop_size;
 };
 

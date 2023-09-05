@@ -4,15 +4,16 @@
 
 #include <random>
 #include "population.h"
+#include "fitness.h"
 
-extern unsigned dim;
 extern std::mt19937 gen;
 extern std::uniform_real_distribution<double> uniformRealDistribution;
 double** pop;
-unsigned pop_size;
+Fitness fitness = Fitness(nullptr, 0);
 
 
-Population::Population(unsigned pop_size, double min, double max) {
+Population::Population(unsigned dim, unsigned pop_size, double min, double max) {
+    this->dim = dim;
     this->pop_size = pop_size;
     pop = new double*[pop_size];
     for (unsigned i = 0; i < pop_size; i++) {
@@ -23,14 +24,21 @@ Population::Population(unsigned pop_size, double min, double max) {
             pop[i][j] = uniformRealDistribution(gen) * (max-min) + min;
         }
     }
+    fitness = Fitness(pop, pop_size);
 }
 
 void Population::debug_print() const {
-    for(unsigned i = 0; i < dim; i++) {
-        for(unsigned j = 0; j < pop_size; j++) {
+    /*
+    for (unsigned i = 0; i < dim; i++) {
+        for (unsigned j = 0; j < pop_size; j++) {
             printf("%f \t", pop[j][i]);
         }
         printf("\n");
+    }
+    */
+    for (unsigned i = 0; i < pop_size; i++) {
+        printf("Fitness: %e \t", fitness.get_fitness(i));
+
     }
 }
 
@@ -39,4 +47,5 @@ void Population::clean() const {
         delete[] pop[i];
     }
     delete[] pop;
+    fitness.clean();
 }

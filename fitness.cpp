@@ -12,6 +12,10 @@
 extern unsigned dim;
 double* opt1;
 
+double Fitness::get_fitness(unsigned int index) {
+    return fitness_values[index];
+}
+
 void load_data_f1() {
     int i = 0;
     std::string path = "../cdatafiles/F1-xopt.txt";
@@ -29,15 +33,12 @@ void load_data_f1() {
     }
 }
 
-Fitness::Fitness(){
+Fitness::Fitness(double** pop, unsigned pop_size) {
     opt1 = new double[dim];
     load_data_f1();
-}
-
-void Fitness::debug_print() {
-    printf("dim: %d\n", dim);
-    for(int i = 0; i < dim; i++) {
-        printf("opt1[%d]: %f\n", i, opt1[i]);
+    fitness_values = new double[pop_size];
+    for(unsigned i = 0; i < pop_size; i++) {
+        fitness_values[i] = function1(pop[i]);
     }
 }
 
@@ -50,7 +51,7 @@ double Fitness::function1(const double* individual) {
     double c1;
     double c2;
 
-// # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
+# pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
     for(unsigned i = 0; i < dim; i++) {
         z[i] = individual[i] - opt1[i];
         // Transformation
@@ -74,6 +75,13 @@ double Fitness::function1(const double* individual) {
 
     delete[] z;
     return result;
+}
+
+void Fitness::debug_print() {
+    printf("dim: %d\n", dim);
+    for(int i = 0; i < dim; i++) {
+        printf("opt1[%d]: %f\n", i, opt1[i]);
+    }
 }
 
 void Fitness::clean() {
