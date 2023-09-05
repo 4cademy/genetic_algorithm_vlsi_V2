@@ -12,10 +12,6 @@
 extern unsigned dim;
 double* opt1;
 
-double Fitness::get_fitness(unsigned int index) {
-    return fitness_values[index];
-}
-
 void load_data_f1() {
     int i = 0;
     std::string path = "../cdatafiles/F1-xopt.txt";

@@ -10,10 +10,8 @@ class Fitness {
 public:
     explicit Fitness(double** pop, unsigned pop_size);
     static void debug_print();
-    double get_fitness(unsigned index);
     double function1(const double *individual);
     static void clean();
-private:
     double* fitness_values;
 };
 

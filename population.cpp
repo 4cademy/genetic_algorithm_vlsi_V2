@@ -37,7 +37,7 @@ void Population::debug_print() const {
     }
     */
     for (unsigned i = 0; i < pop_size; i++) {
-        printf("Fitness: %e \t", fitness.get_fitness(i));
+        printf("Fitness: %e \t", fitness.fitness_values[i]);
 
     }
 }
