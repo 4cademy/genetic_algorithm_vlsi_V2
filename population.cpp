@@ -8,8 +8,6 @@
 
 extern std::mt19937 gen;
 extern std::uniform_real_distribution<double> uniformRealDistribution;
-double** pop;
-Fitness fitness = Fitness(nullptr, 0);
 
 
 Population::Population(unsigned dim, unsigned pop_size, double min, double max) {
@@ -47,5 +45,5 @@ void Population::clean() const {
         delete[] pop[i];
     }
     delete[] pop;
-    fitness.clean();
+    Fitness::clean();
 }

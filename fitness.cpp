@@ -29,15 +29,6 @@ void load_data_f1() {
     }
 }
 
-Fitness::Fitness(double** pop, unsigned pop_size) {
-    opt1 = new double[dim];
-    load_data_f1();
-    fitness_values = new double[pop_size];
-    for(unsigned i = 0; i < pop_size; i++) {
-        fitness_values[i] = function1(pop[i]);
-    }
-}
-
 double Fitness::function1(const double* individual) {
     double result = 0;
     auto* z = new double[dim];
@@ -47,7 +38,7 @@ double Fitness::function1(const double* individual) {
     double c1;
     double c2;
 
-# pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
+    # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
     for(unsigned i = 0; i < dim; i++) {
         z[i] = individual[i] - opt1[i];
         // Transformation
@@ -73,6 +64,32 @@ double Fitness::function1(const double* individual) {
     return result;
 }
 
+void Fitness::compute_fitness(double** pop){
+    fitness_values[0] = function1(pop[0]);
+    min_fitness = fitness_values[0];
+    max_fitness = fitness_values[0];
+
+    #pragma omp parallel for default(none) shared(pop, fitness_values, pop_size) reduction(min:min_fitness) reduction(max:max_fitness)
+    for(unsigned i = 1; i < pop_size; i++) {
+        fitness_values[i] = function1(pop[i]);
+        if (fitness_values[i] < min_fitness) {
+            min_fitness = fitness_values[i];
+        } else if (fitness_values[i] > max_fitness) {
+            max_fitness = fitness_values[i];
+        }
+    }
+}
+
+Fitness::Fitness(double** pop, unsigned pop_size) {
+    opt1 = new double[dim];
+    load_data_f1();
+
+    this->pop_size = pop_size;
+
+    fitness_values = new double[pop_size];
+    compute_fitness(pop);
+}
+
 void Fitness::debug_print() {
     printf("dim: %d\n", dim);
     for(int i = 0; i < dim; i++) {
@@ -83,3 +100,4 @@ void Fitness::debug_print() {
 void Fitness::clean() {
     delete[] opt1;
 }
+

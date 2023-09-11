@@ -8,11 +8,16 @@
 
 class Fitness {
 public:
-    explicit Fitness(double** pop, unsigned pop_size);
+    Fitness()= default;;
+    Fitness(double** pop, unsigned pop_size);
     static void debug_print();
-    double function1(const double *individual);
+    static double function1(const double *individual);
     static void clean();
-    double* fitness_values;
+    double* fitness_values{};
+    double min_fitness{};
+    double max_fitness{};
+    unsigned pop_size;
+    void compute_fitness(double **pop);
 };
 
 
