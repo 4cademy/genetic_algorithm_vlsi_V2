@@ -7,15 +7,16 @@
 using namespace std::chrono;
 
 unsigned dim = 1000;
-unsigned pop_size = 10;
+unsigned pop_size = 1000;
 
 int main() {
     auto start = high_resolution_clock::now();
-    Ga ga = Ga(dim, pop_size, -100, 100);
+    Ga* ga = new Ga(dim, pop_size, -100, 100);
 
+    ga->evolve(1000);
 
     // free allocated memory
-    ga.clean();
+    ga->clean();
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<microseconds>(stop - start);

@@ -26,7 +26,6 @@ void Ga::load_data_f1(){
     int i = 0;
     std::string path = "../cdatafiles/F1-xopt.txt";
     std::ifstream file(path);
-    printf("Debug: 4.2\n");
     if (file.is_open()) {
         std::string line;
         while (getline(file, line)) {
@@ -50,7 +49,7 @@ double Ga::function1(const double* individual) const {
     double c1;
     double c2;
 
-    // # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
+    # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
     for(unsigned i = 0; i < dim; i++) {
         z[i] = individual[i] - opt1[i];
         // Transformation
@@ -78,8 +77,16 @@ double Ga::function1(const double* individual) const {
 
 // computes the fitness of each individual in the population
 void Ga::compute_fitness(){
-    for (unsigned i=0; i<pop_size; i++) {
+    min_fitness = function1(pop[0]);
+    max_fitness = function1(pop[0]);
+    #pragma omp parallel for default(none) shared(pop, fitness, pop_size) reduction(min:min_fitness) reduction(max:max_fitness)
+    for (unsigned i=1; i<pop_size; i++) {
         fitness[i] = function1(pop[i]);
+        if(fitness[i] < min_fitness) {
+            min_fitness = fitness[i];
+        } else if (fitness[i] > max_fitness) {
+            max_fitness = fitness[i];
+        }
     }
 }
 
@@ -101,6 +108,12 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
         }
     }
 
+    // initialize mating list
+    mating_list = new double*[2*pop_size];
+    for (unsigned i = 0; i < 2*pop_size; i++) {
+        mating_list[i] = new double[dim];
+    }
+
     // load optimal vector for benchmark function 1
     load_data_f1();
 
@@ -117,8 +130,79 @@ void Ga::clean() const {
     }
     delete[] pop;
 
+    for (unsigned i = 0; i < pop_size; i++) {
+        delete[] mating_list[i];
+    }
+    delete[] mating_list;
+
     delete[] opt1;
     delete[] fitness;
+}
+
+void Ga::selection_roulette() {
+    // create list of offsets for roulette selection
+    auto* offset = new double[pop_size];
+    auto* roulette_fitness = new double[pop_size]; // an all positive fitness vector where the best individual has the highest fitness
+    double total_fitness = 0;
+
+    // shift fitness to all positive values and invert it so the minimal value has the highest fitness
+    #pragma omp parallel for default(none) shared(pop_size, roulette_fitness, max_fitness, fitness) reduction(+:total_fitness)
+    for (unsigned i=0; i<pop_size; i++) {
+        // shift fitness to all positive values and invert it so the minimal value has the highest fitness
+        roulette_fitness[i] = max_fitness - fitness[i];
+        // calculate total fitness
+        total_fitness += roulette_fitness[i];
+    }
+
+    // ToDo: merge with for-loop for roulette_fitness
+    offset[0] = roulette_fitness[0] / total_fitness;
+    // calculate offset for roulette selection
+    for (unsigned i=1; i<pop_size; i++) {
+        offset[i] = offset[i-1] + (roulette_fitness[i] / total_fitness);
+    }
+
+    // do roulette selection
+    for (unsigned i=0; i < 2*pop_size; i++) {
+        double roulette_random = rng(0,1);
+        for (unsigned j=0; j<pop_size; j++) {
+            if (roulette_random < offset[j]) {
+                for (unsigned k=0; k < dim; k++) {
+                    mating_list[i][k] = pop[j][k];          // ToDo prevent mating with itself
+                }
+                break;
+            }
+        }
+    }
+
+    // free memory
+    delete[] offset;
+    delete[] roulette_fitness;
+}
+
+void Ga::crossover_uniform() {
+    #pragma omp parallel for collapse(2) default(none) shared(pop_size, dim, pop, mating_list)
+    for (unsigned  i=0; i<pop_size; i++) {
+        for (unsigned  j=0; j<dim; j++) {
+            if (rng(0,1) < 0.5) {       // choose gene of parent A
+                pop[i][j] = mating_list[2*i][j];
+            } else {                    // choose gene of parent B
+                pop[i][j] = mating_list[2*i+1][j];
+            }
+        }
+    }
+}
+
+void Ga::evolve(int generations) {
+    for (int i=0; i<generations; i++) {
+        // printf("Debug: 1 \n");
+        selection_roulette();
+        // printf("Debug: 2 \n");
+        crossover_uniform();
+        // ToDo mutation
+        // printf("Debug: 3 \n");
+        compute_fitness();
+        printf("%e \n", min_fitness);
+    }
 }
 
 
