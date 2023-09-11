@@ -19,6 +19,8 @@ public:
     double* fitness{};
     double min_fitness{};
     double max_fitness{};
+    double best_fitness{};
+    double convergence{};
 
 
 private:

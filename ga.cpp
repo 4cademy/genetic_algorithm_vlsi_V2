@@ -2,6 +2,7 @@
 // Created by Marcel Beyer on 11.09.2023.
 //
 
+#include <cstdio>
 #include <random>
 #include "ga.h"
 #include <iostream>
@@ -11,14 +12,14 @@
 #include <omp.h>
 #include <cmath>
 
-std::random_device rd;  // Will be used to obtain a seed for the random number engine
-std::mt19937 gen(rd()); // Standard mersenne_twister_engine seeded with rd()
-std::uniform_real_distribution<double> uniformRealDistribution(0.0, 1.0);
 
-// creates random number between min and max
-double rng(double min, double max) {
-    return uniformRealDistribution(gen) * (max-min) + min;
-}
+std::random_device rd;
+const std::random_device::result_type seed = rd();
+
+// create global random number generator for use outside of OpenMP parallel regions
+std::uniform_real_distribution<double> gdist(0.0, 1.0);
+std::minstd_rand ggen(seed + static_cast<unsigned>(omp_get_thread_num()));
+
 
 // loads the data for the optimal solution for function 1 from the datafile into the opt1 vector
 void Ga::load_data_f1(){
@@ -77,6 +78,7 @@ double Ga::function1(const double* individual) const {
 
 // computes the fitness of each individual in the population
 void Ga::compute_fitness(){
+    fitness[0] = function1(pop[0]);
     min_fitness = function1(pop[0]);
     max_fitness = function1(pop[0]);
     #pragma omp parallel for default(none) shared(pop, fitness, pop_size) reduction(min:min_fitness) reduction(max:max_fitness)
@@ -88,6 +90,13 @@ void Ga::compute_fitness(){
             max_fitness = fitness[i];
         }
     }
+
+    // checks if the current min_fitness is better than the best_fitness
+    if (min_fitness < best_fitness) {
+        best_fitness = min_fitness;
+    }
+    // computes the convergence
+    convergence = 1-min_fitness/max_fitness;
 }
 
 // constructor for the class Ga
@@ -97,30 +106,37 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
     this->min_gene = min_gene;
     this->max_gene = max_gene;
 
+    // load optimal vector for benchmark function 1
+    load_data_f1();
+
     // initialize population
     pop = new double*[pop_size];
     for (unsigned i = 0; i < pop_size; i++) {
         pop[i] = new double[dim];
     }
-    for (unsigned i=0; i<pop_size; i++) {
-        for (unsigned j=0; j<dim; j++) {
-            pop[i][j] = rng(min_gene, max_gene);
+
+    #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, min_gene, max_gene)
+    {
+        std::uniform_real_distribution<double> dist(min_gene, max_gene);
+        std::minstd_rand gen(seed + static_cast<unsigned>(omp_get_thread_num()));
+        #pragma omp for collapse(2)
+        for (unsigned i = 0; i < pop_size; i++) {
+            for (unsigned j = 0; j < dim; j++) {
+                pop[i][j] = dist(gen);
+            }
         }
     }
+
+    // initialize fitness vector
+    fitness = new double[pop_size];
+    compute_fitness();
+    best_fitness = min_fitness;
 
     // initialize mating list
     mating_list = new double*[2*pop_size];
     for (unsigned i = 0; i < 2*pop_size; i++) {
         mating_list[i] = new double[dim];
     }
-
-    // load optimal vector for benchmark function 1
-    load_data_f1();
-
-    // initialize fitness vector
-    fitness = new double[pop_size];
-    compute_fitness();
-
 }
 
 // cleans up the allocated memory
@@ -161,9 +177,10 @@ void Ga::selection_roulette() {
         offset[i] = offset[i-1] + (roulette_fitness[i] / total_fitness);
     }
 
+
     // do roulette selection
     for (unsigned i=0; i < 2*pop_size; i++) {
-        double roulette_random = rng(0,1);
+        double roulette_random = gdist(ggen);
         for (unsigned j=0; j<pop_size; j++) {
             if (roulette_random < offset[j]) {
                 for (unsigned k=0; k < dim; k++) {
@@ -180,13 +197,18 @@ void Ga::selection_roulette() {
 }
 
 void Ga::crossover_uniform() {
-    #pragma omp parallel for collapse(2) default(none) shared(pop_size, dim, pop, mating_list)
-    for (unsigned  i=0; i<pop_size; i++) {
-        for (unsigned  j=0; j<dim; j++) {
-            if (rng(0,1) < 0.5) {       // choose gene of parent A
-                pop[i][j] = mating_list[2*i][j];
-            } else {                    // choose gene of parent B
-                pop[i][j] = mating_list[2*i+1][j];
+    #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, mating_list)
+    {
+        std::uniform_real_distribution<double> dist(0, 1);
+        std::minstd_rand gen(seed + static_cast<unsigned>(omp_get_thread_num()));
+        #pragma for collapse(2)
+        for (unsigned i = 0; i < pop_size; i++) {
+            for (unsigned j = 0; j < dim; j++) {
+                if (dist(gen) < 0.5) {       // choose gene of parent A
+                    pop[i][j] = mating_list[2 * i][j];
+                } else {                    // choose gene of parent B
+                    pop[i][j] = mating_list[2 * i + 1][j];
+                }
             }
         }
     }
@@ -194,15 +216,13 @@ void Ga::crossover_uniform() {
 
 void Ga::evolve(int generations) {
     for (int i=0; i<generations; i++) {
-        // printf("Debug: 1 \n");
         selection_roulette();
-        // printf("Debug: 2 \n");
         crossover_uniform();
         // ToDo mutation
-        // printf("Debug: 3 \n");
         compute_fitness();
-        printf("%e \n", min_fitness);
+        // printf("%e \n", min_fitness);
     }
+    printf("Best fitness: %e \n", best_fitness);
 }
 
 

@@ -9,4 +9,4 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(genetic_algorithm_vlsi_V2
-        main.cpp fitness.cpp fitness.h population.cpp population.h ga_old.cpp ga_old.h ga.cpp ga.h)
+        main.cpp ga.cpp ga.h)
