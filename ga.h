@@ -11,7 +11,7 @@ public:
     Ga()= default;;
     Ga(unsigned dim, unsigned pop_size, double min_gene, double max_gene);
     void load_data_f1();
-    void evolve(int generations);
+    void evolve(int generations, bool break_on_convergence);
 
     void clean() const;
 

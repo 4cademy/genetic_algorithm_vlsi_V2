@@ -11,15 +11,11 @@
 #include <algorithm>
 #include <omp.h>
 #include <cmath>
+#include <thread>
 
 
 std::random_device rd;
 const std::random_device::result_type seed = rd();
-
-// create global random number generator for use outside of OpenMP parallel regions
-std::uniform_real_distribution<double> gdist(0.0, 1.0);
-std::minstd_rand ggen(seed + static_cast<unsigned>(omp_get_thread_num()));
-
 
 // loads the data for the optimal solution for function 1 from the datafile into the opt1 vector
 void Ga::load_data_f1(){
@@ -118,7 +114,7 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, min_gene, max_gene)
     {
         std::uniform_real_distribution<double> dist(min_gene, max_gene);
-        std::minstd_rand gen(seed + static_cast<unsigned>(omp_get_thread_num()));
+        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
         #pragma omp for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
             for (unsigned j = 0; j < dim; j++) {
@@ -177,10 +173,13 @@ void Ga::selection_roulette() {
         offset[i] = offset[i-1] + (roulette_fitness[i] / total_fitness);
     }
 
+    // create global random number generator for use outside of OpenMP parallel regions
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
 
     // do roulette selection
     for (unsigned i=0; i < 2*pop_size; i++) {
-        double roulette_random = gdist(ggen);
+        double roulette_random = dist(gen);
         for (unsigned j=0; j<pop_size; j++) {
             if (roulette_random < offset[j]) {
                 for (unsigned k=0; k < dim; k++) {
@@ -200,7 +199,7 @@ void Ga::crossover_uniform() {
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, mating_list)
     {
         std::uniform_real_distribution<double> dist(0, 1);
-        std::minstd_rand gen(seed + static_cast<unsigned>(omp_get_thread_num()));
+        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
         #pragma for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
             for (unsigned j = 0; j < dim; j++) {
@@ -214,14 +213,28 @@ void Ga::crossover_uniform() {
     }
 }
 
-void Ga::evolve(int generations) {
-    for (int i=0; i<generations; i++) {
+void Ga::evolve(int generations, bool break_on_convergence) {
+    int i;
+    unsigned convergence_counter = 0;
+    double convergence_threshold = 0.1;
+    for (i=0; i<generations; i++) {
+        compute_fitness();
         selection_roulette();
         crossover_uniform();
         // ToDo mutation
-        compute_fitness();
         // printf("%e \n", min_fitness);
+        if(break_on_convergence){
+            if (convergence < convergence_threshold) {
+                convergence_counter++;
+                if (convergence_counter >= 10){
+                    break;
+                }
+            } else {
+                convergence_counter = 0;
+            }
+        }
     }
+    printf("Generations: %d \n", i);
     printf("Best fitness: %e \n", best_fitness);
 }
 
