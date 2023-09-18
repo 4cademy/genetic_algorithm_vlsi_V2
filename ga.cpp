@@ -128,6 +128,8 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
     compute_fitness();
     best_fitness = min_fitness;
 
+    min_fitness_vector = new double[pop_size];
+
     // initialize mating list
     mating_list = new double*[2*pop_size];
     for (unsigned i = 0; i < 2*pop_size; i++) {
@@ -219,6 +221,8 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     double convergence_threshold = 0.1;
     for (i=0; i<generations; i++) {
         compute_fitness();
+        min_fitness_vector[i] = min_fitness;
+
         selection_roulette();
         crossover_uniform();
         // ToDo mutation
@@ -234,6 +238,17 @@ void Ga::evolve(int generations, bool break_on_convergence) {
             }
         }
     }
+
+    // write results to file
+    const auto p1 = std::chrono::system_clock::now();
+    long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
+    std::ofstream results_file;
+    std::string filename = "results_" + std::to_string(timestamp) + ".csv";
+    results_file.open(filename);
+    for (unsigned j = 0; j < generations; j++) {
+        results_file << std::to_string(min_fitness_vector[j]) << "\n";
+    }
+
     printf("Generations: %d \n", i);
     printf("Best fitness: %e \n", best_fitness);
 }

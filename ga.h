@@ -30,6 +30,7 @@ private:
     double max_gene{};
     double* opt1{};
     double** mating_list{};  // contains the numbers of the individuals that are selected for mating (index0 mates with index1, index2 with index3, ...)
+    double* min_fitness_vector{};   // contains the minimum fitness of each generation
 
     double function1(const double* individual) const;
     void compute_fitness();
