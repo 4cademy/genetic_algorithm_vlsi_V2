@@ -113,8 +113,10 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
 
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, min_gene, max_gene)
     {
+        const auto p1 = std::chrono::system_clock::now();
+        long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
         std::uniform_real_distribution<double> dist(Ga::min_gene, Ga::max_gene);
-        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
+        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
         #pragma omp for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
             for (unsigned j = 0; j < dim; j++) {
@@ -176,8 +178,10 @@ void Ga::selection_roulette() {
     }
 
     // create global random number generator for use outside of OpenMP parallel regions
+    const auto p1 = std::chrono::system_clock::now();
+    long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
     std::uniform_real_distribution<double> dist(0.0, 1.0);
-    std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
+    std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
 
     // do roulette selection
     for (unsigned i=0; i < 2*pop_size; i++) {
@@ -200,8 +204,10 @@ void Ga::selection_roulette() {
 void Ga::crossover_uniform() {
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, mating_list)
     {
+        const auto p1 = std::chrono::system_clock::now();
+        long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
         std::uniform_real_distribution<double> dist(0, 1);
-        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
+        std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
         #pragma for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
             for (unsigned j = 0; j < dim; j++) {
@@ -243,7 +249,7 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     const auto p1 = std::chrono::system_clock::now();
     long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
     std::ofstream results_file;
-    std::string filename = "results_" + std::to_string(timestamp) + ".csv";
+    std::string filename = "results_" + std::to_string(timestamp) + "_" + std::to_string(generations) + ".csv";
     results_file.open(filename);
     for (unsigned j = 0; j < i; j++) {
         results_file << std::to_string(Ga::min_fitness_vector[j]) << "\n";
