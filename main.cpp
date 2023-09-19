@@ -46,13 +46,13 @@ int main() {
     auto start = high_resolution_clock::now();
 
     Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-    ga0->evolve(1000, true);
-    // Ga* ga1 = new Ga(dim, pop_size, -100, 100);
+    // ga0->evolve(1000, true);
+    Ga* ga1 = new Ga(dim, pop_size, -100, 100);
 
-    /*
+
     for(unsigned k = 0; k < 3; k++) {
-        ga0->evolve(350, true);
-        ga1->evolve(350, true);
+        ga0->evolve(300, true);
+        ga1->evolve(300, true);
 
         auto* fitness_copy = new double[pop_size];
         for(unsigned i = 0; i < pop_size; i++) {
@@ -78,11 +78,11 @@ int main() {
         delete[] best_individuals;
         delete[] fitness_copy;
     }
-    */
+
 
     // free allocated memory
     ga0->clean();
-    // ga1->clean();
+    ga1->clean();
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop - start);

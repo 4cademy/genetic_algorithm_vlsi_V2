@@ -113,7 +113,7 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
 
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, min_gene, max_gene)
     {
-        std::uniform_real_distribution<double> dist(min_gene, max_gene);
+        std::uniform_real_distribution<double> dist(Ga::min_gene, Ga::max_gene);
         std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + clock());
         #pragma omp for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
@@ -221,7 +221,7 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     double convergence_threshold = 0.1;
     for (i=0; i<generations; i++) {
         compute_fitness();
-        min_fitness_vector[i] = min_fitness;
+        Ga::min_fitness_vector[i] = min_fitness;
 
         selection_roulette();
         crossover_uniform();
@@ -245,12 +245,12 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     std::ofstream results_file;
     std::string filename = "results_" + std::to_string(timestamp) + ".csv";
     results_file.open(filename);
-    for (unsigned j = 0; j < generations; j++) {
-        results_file << std::to_string(min_fitness_vector[j]) << "\n";
+    for (unsigned j = 0; j < i; j++) {
+        results_file << std::to_string(Ga::min_fitness_vector[j]) << "\n";
     }
 
     printf("Generations: %d \n", i);
-    printf("Best fitness: %e \n", best_fitness);
+    printf("Best fitness: %e \n", Ga::best_fitness);
 }
 
 

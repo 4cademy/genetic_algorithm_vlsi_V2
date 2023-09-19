@@ -26,8 +26,8 @@ public:
 private:
     unsigned dim{};
     unsigned pop_size{};
-    double min_gene{};
-    double max_gene{};
+    double min_gene{};  // min value for each gene
+    double max_gene{};  // max value for each gene
     double* opt1{};
     double** mating_list{};  // contains the numbers of the individuals that are selected for mating (index0 mates with index1, index2 with index3, ...)
     double* min_fitness_vector{};   // contains the minimum fitness of each generation
