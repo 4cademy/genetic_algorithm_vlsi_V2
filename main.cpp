@@ -167,9 +167,10 @@ int main() {
 
 # if 1
     unsigned percentage = 10;
+    unsigned runs = 2;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<2 ; i++) {
-        printf("Run: %i\n", i);
+    for (int i = 0; i<runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
@@ -187,9 +188,10 @@ int main() {
     }
 
     percentage = 20;
+    runs = 3;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<3 ; i++) {
-        printf("Run: %i\n", i);
+    for (int i = 0; i<runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
@@ -207,9 +209,10 @@ int main() {
     }
 
     percentage = 30;
+    runs = 3;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<3 ; i++) {
-        printf("Run: %i\n", i);
+    for (int i = 0; i<runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
@@ -226,7 +229,6 @@ int main() {
         ga1->~Ga();
     }
 # endif
-
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop - start);
