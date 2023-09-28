@@ -169,7 +169,7 @@ int main() {
     unsigned percentage = 10;
     unsigned runs = 2;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<runs ; i++) {
+    for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
@@ -190,7 +190,7 @@ int main() {
     percentage = 20;
     runs = 3;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<runs ; i++) {
+    for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
@@ -211,7 +211,7 @@ int main() {
     percentage = 30;
     runs = 3;
     printf("Preceding %i percent exchange:\n", percentage);
-    for (int i = 0; i<runs ; i++) {
+    for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
