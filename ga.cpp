@@ -19,32 +19,31 @@ const std::random_device::result_type seed = rd();
 
 // loads the data for the optimal solution for function 1 from the datafile into the opt1 vector
 void Ga::load_data_f1(){
-    opt1 = new double[dim];
+    opt1 = new float[dim];
     int i = 0;
     std::string path = "../cdatafiles/F1-xopt.txt";
     std::ifstream file(path);
     if (file.is_open()) {
         std::string line;
         while (getline(file, line)) {
-            opt1[i++] = stod(line);
+            opt1[i++] = stof(line);
         }
         file.close();
     }
     else {
         std::cout << "Cannot open the datafile '" << path << "'" << std::endl;
     }
-    printf("%f\n", opt1[0]);
 }
 
 // fitness function 1
-double Ga::function1(const double* individual) const {
-    double result = 0;
-    auto* z = new double[dim];
+float Ga::function1(const float* individual) const {
+    float result = 0;
+    auto* z = new float[dim];
 
     int sign;
-    double hat;
-    double c1;
-    double c2;
+    float hat;
+    float c1;
+    float c2;
 
     # pragma omp parallel for default(none) shared(individual, z, dim, opt1) private(sign, hat, c1, c2) reduction(+:result)
     for(unsigned i = 0; i < dim; i++) {
@@ -52,20 +51,20 @@ double Ga::function1(const double* individual) const {
         // Transformation
         if (z[i] > 0) {
             sign = 1;
-            hat = log(fabs(z[i]));
+            hat = logf(fabsf(z[i]));
             c1 = 10;
             c2 = 7.9;
-            z[i] = sign*exp(hat+0.049*(sin(c1*hat)+sin(c2*hat)));
+            z[i] = (float)sign*expf(hat+(float)0.049*(sinf(c1*hat)+sinf(c2*hat)));
         } else if (z[i] == 0) {
             z[i] = 0;
         } else {
             sign = -1;
-            hat = log(fabs(z[i]));
+            hat = logf(fabsf(z[i]));
             c1 = 5.5;
             c2 = 3.1;
-            z[i] = sign*exp(hat+0.049*(sin(c1*hat)+sin(c2*hat)));
+            z[i] = (float)sign*expf(hat+(float)0.049*(sinf(c1*hat)+sinf(c2*hat)));
         }
-        result += pow(1.0e6,  i/((double)(dim - 1)) ) * z[i] * z[i];
+        result += powf(1.0e6,  (float)i/(float)((dim - 1)) ) * z[i] * z[i];
     }
 
     delete[] z;
@@ -96,7 +95,7 @@ void Ga::compute_fitness(){
 }
 
 // constructor for the class Ga
-Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene) {
+Ga::Ga(unsigned int dim, unsigned int pop_size, float min_gene, float max_gene) {
     this->dim = dim;
     this->pop_size = pop_size;
     this->min_gene = min_gene;
@@ -106,16 +105,16 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
     load_data_f1();
 
     // initialize population
-    pop = new double*[pop_size];
+    pop = new float*[pop_size];
     for (unsigned i = 0; i < pop_size; i++) {
-        pop[i] = new double[dim];
+        pop[i] = new float[dim];
     }
 
     #pragma omp parallel default(none) shared(seed, pop_size, dim, pop, min_gene, max_gene)
     {
         const auto p1 = std::chrono::system_clock::now();
         long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
-        std::uniform_real_distribution<double> dist(Ga::min_gene, Ga::max_gene);
+        std::uniform_real_distribution<float> dist(Ga::min_gene, Ga::max_gene);
         std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
         #pragma omp for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
@@ -126,21 +125,28 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, double min_gene, double max_gene
     }
 
     // initialize fitness vector
-    fitness = new double[pop_size];
+    fitness = new float[pop_size];
     compute_fitness();
     best_fitness = min_fitness;
 
-    min_fitness_vector = new double[pop_size];
+    min_fitness_vector = new float[pop_size];
 
     // initialize mating list
-    mating_list = new double*[2*pop_size];
+    mating_list = new float*[2*pop_size];
     for (unsigned i = 0; i < 2*pop_size; i++) {
-        mating_list[i] = new double[dim];
+        mating_list[i] = new float[dim];
     }
+
+    // get start time
+    const auto p1 = std::chrono::system_clock::now();
+    Ga::start_time = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
+
+    //
+    printf("Ga created: %p\n", this);
 }
 
-// cleans up the allocated memory
-void Ga::clean() const {
+// destructor for the class Ga
+Ga::~Ga() {
     for (unsigned i = 0; i < pop_size; i++) {
         delete[] pop[i];
     }
@@ -153,13 +159,15 @@ void Ga::clean() const {
 
     delete[] opt1;
     delete[] fitness;
+    printf("Ga destroyed: %p\n", this);
 }
+
 
 void Ga::selection_roulette() {
     // create list of offsets for roulette selection
-    auto* offset = new double[pop_size];
-    auto* roulette_fitness = new double[pop_size]; // an all positive fitness vector where the best individual has the highest fitness
-    double total_fitness = 0;
+    auto* offset = new float[pop_size];
+    auto* roulette_fitness = new float[pop_size]; // an all positive fitness vector where the best individual has the highest fitness
+    float total_fitness = 0;
 
     // shift fitness to all positive values and invert it so the minimal value has the highest fitness
     #pragma omp parallel for default(none) shared(pop_size, roulette_fitness, max_fitness, fitness) reduction(+:total_fitness)
@@ -180,12 +188,12 @@ void Ga::selection_roulette() {
     // create global random number generator for use outside of OpenMP parallel regions
     const auto p1 = std::chrono::system_clock::now();
     long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
-    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    std::uniform_real_distribution<float> dist(0.0, 1.0);
     std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
 
     // do roulette selection
     for (unsigned i=0; i < 2*pop_size; i++) {
-        double roulette_random = dist(gen);
+        float roulette_random = dist(gen);
         for (unsigned j=0; j<pop_size; j++) {
             if (roulette_random < offset[j]) {
                 for (unsigned k=0; k < dim; k++) {
@@ -206,7 +214,7 @@ void Ga::crossover_uniform() {
     {
         const auto p1 = std::chrono::system_clock::now();
         long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
-        std::uniform_real_distribution<double> dist(0, 1);
+        std::uniform_real_distribution<float> dist(0, 1);
         std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
         #pragma for collapse(2)
         for (unsigned i = 0; i < pop_size; i++) {
@@ -224,7 +232,7 @@ void Ga::crossover_uniform() {
 void Ga::evolve(int generations, bool break_on_convergence) {
     int i;
     unsigned convergence_counter = 0;
-    double convergence_threshold = 0.1;
+    float convergence_threshold = 0.1;
     for (i=0; i<generations; i++) {
         compute_fitness();
         Ga::min_fitness_vector[i] = min_fitness;
@@ -246,14 +254,13 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     }
 
     // write results to file
-    const auto p1 = std::chrono::system_clock::now();
-    long long timestamp = std::chrono::duration_cast<std::chrono::seconds>(p1.time_since_epoch()).count();
     std::ofstream results_file;
-    std::string filename = "results_" + std::to_string(timestamp) + "_" + std::to_string(generations) + ".csv";
-    results_file.open(filename);
+    std::string filename = "results_" + std::to_string(Ga::start_time) + ".csv";
+    results_file.open(filename, std::ios_base::app);
     for (unsigned j = 0; j < i; j++) {
         results_file << std::to_string(Ga::min_fitness_vector[j]) << "\n";
     }
+    results_file.close();
 
     printf("Generations: %d \n", i);
     printf("Best fitness: %e \n", Ga::best_fitness);

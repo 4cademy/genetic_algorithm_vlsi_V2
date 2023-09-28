@@ -9,10 +9,10 @@
 
 using namespace std::chrono;
 
-unsigned dim = 1000;
-unsigned pop_size = 5000;
+unsigned dim = 1'000;
+unsigned pop_size = 5'000;
 
-unsigned min_index(const double* array, unsigned size) {
+unsigned min_index(const float* array, unsigned size) {
     unsigned min_index = 0;
     for (unsigned i = 1; i < size; i++) {
         if (array[i] < array[min_index]) {
@@ -22,22 +22,22 @@ unsigned min_index(const double* array, unsigned size) {
     return min_index;
 }
 
-void copy_pop_element(double** source, unsigned source_index, double** target, unsigned target_index) {
+void copy_pop_element(float** source, unsigned source_index, float** target, unsigned target_index) {
     for (unsigned i = 0; i < dim; i++) {
         target[target_index][i] = source[source_index][i];
     }
 }
 
-void copy_best_individuals(double** a_pop, double* a_fit, double** b_pop, double* b_fit, double** target) {
+void copy_best_individuals(float** a_pop, float* a_fit, float** b_pop, float* b_fit, float** target) {
     for (unsigned i = 0; i < pop_size; i++) {
         unsigned min_a = min_index(a_fit, pop_size);
         unsigned min_b = min_index(b_fit, pop_size);
         if(a_fit[min_a] < b_fit[min_b]) {
             copy_pop_element(a_pop, min_a, target, i);
-            a_fit[min_a] = std::numeric_limits<double>::max();
+            a_fit[min_a] = std::numeric_limits<float>::max();
         } else {
             copy_pop_element(b_pop, min_b, target, i);
-            b_fit[min_b] = std::numeric_limits<double>::max();
+            b_fit[min_b] = std::numeric_limits<float>::max();
         }
     }
 }
@@ -45,23 +45,28 @@ void copy_best_individuals(double** a_pop, double* a_fit, double** b_pop, double
 int main() {
     auto start = high_resolution_clock::now();
 
+#if 1
     Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-    // ga0->evolve(1000, true);
+    ga0->evolve(1000, false);
+    ga0->~Ga();
+#endif
+
+# if 0
+    Ga* ga0 = new Ga(dim, pop_size, -100, 100);
     Ga* ga1 = new Ga(dim, pop_size, -100, 100);
 
+    for(unsigned k = 0; k < 1; k++) {
+        ga0->evolve(600, false);
+        ga1->evolve(600, false);
 
-    for(unsigned k = 0; k < 3; k++) {
-        ga0->evolve(300, true);
-        ga1->evolve(300, true);
-
-        auto* fitness_copy = new double[pop_size];
+        auto* fitness_copy = new float[pop_size];
         for(unsigned i = 0; i < pop_size; i++) {
             fitness_copy[i] = ga0->fitness[i];
         }
 
-        auto** best_individuals = new double*[pop_size];
+        auto** best_individuals = new float*[pop_size];
         for(unsigned i = 0; i < pop_size; i++) {
-            best_individuals[i] = new double[dim];
+            best_individuals[i] = new float[dim];
         }
 
         copy_best_individuals(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, best_individuals);
@@ -78,11 +83,12 @@ int main() {
         delete[] best_individuals;
         delete[] fitness_copy;
     }
+    ga0->evolve(400, false);
+    ga1->evolve(400, false);
 
-
-    // free allocated memory
-    ga0->clean();
-    ga1->clean();
+    ga0->~Ga();
+    ga1->~Ga();
+# endif
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop - start);

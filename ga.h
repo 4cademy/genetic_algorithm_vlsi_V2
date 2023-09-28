@@ -8,31 +8,33 @@
 
 class Ga {
 public:
-    Ga()= default;;
-    Ga(unsigned dim, unsigned pop_size, double min_gene, double max_gene);
+    Ga()= delete;
+    Ga(unsigned dim, unsigned pop_size, float min_gene, float max_gene);
+    Ga(const Ga& ga) = delete;
+    Ga(Ga&& ga) = delete;
+    ~Ga();
     void load_data_f1();
     void evolve(int generations, bool break_on_convergence);
 
-    void clean() const;
-
-    double** pop{};
-    double* fitness{};
-    double min_fitness{};
-    double max_fitness{};
-    double best_fitness{};
-    double convergence{};
+    float** pop{};
+    float* fitness{};
+    float min_fitness{};
+    float max_fitness{};
+    float best_fitness{};
+    float convergence{};
 
 
 private:
     unsigned dim{};
     unsigned pop_size{};
-    double min_gene{};  // min value for each gene
-    double max_gene{};  // max value for each gene
-    double* opt1{};
-    double** mating_list{};  // contains the numbers of the individuals that are selected for mating (index0 mates with index1, index2 with index3, ...)
-    double* min_fitness_vector{};   // contains the minimum fitness of each generation
+    float min_gene{};  // min value for each gene
+    float max_gene{};  // max value for each gene
+    float* opt1{};
+    float** mating_list{};  // contains the numbers of the individuals that are selected for mating (index0 mates with index1, index2 with index3, ...)
+    float* min_fitness_vector{};   // contains the minimum fitness of each generation
+    long long start_time{}; // start time of the algorithm
 
-    double function1(const double* individual) const;
+    float function1(const float* individual) const;
     void compute_fitness();
     void selection_roulette();
     void crossover_uniform();
