@@ -121,14 +121,15 @@ int main() {
     auto start = high_resolution_clock::now();
 
 #if 1
-    unsigned runs = 4;
+    unsigned runs = 0;
+    pop_size = 10'000;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
         Ga* ga0 = new Ga(dim, pop_size, -100, 100);
         ga0->evolve(1000, false);
         ga0->~Ga();
     }
-    runs = 3;
+    runs = 0;
     pop_size = 5'000;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
@@ -136,7 +137,7 @@ int main() {
         ga0->evolve(1000, false);
         ga0->~Ga();
     }
-    runs = 2;
+    runs = 1;
     pop_size = 20'000;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);

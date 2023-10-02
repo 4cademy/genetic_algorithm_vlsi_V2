@@ -191,6 +191,7 @@ void Ga::selection_roulette() {
     std::uniform_real_distribution<float> dist(0.0, 1.0);
     std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
 
+    // ToDo: parallelize
     // do roulette selection
     for (unsigned i=0; i < 2*pop_size; i++) {
         float roulette_random = dist(gen);
