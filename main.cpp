@@ -9,7 +9,7 @@
 using namespace std::chrono;
 
 unsigned dim = 1'000;
-unsigned pop_size = 5'000;
+unsigned pop_size = 10'000;
 
 enum minmax {
     MIN,
@@ -120,10 +120,30 @@ void exchange_percentage(float** a_pop, float* a_fit, float** b_pop, float* b_fi
 int main() {
     auto start = high_resolution_clock::now();
 
-#if 0
-    Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-    ga0->evolve(1000, false);
-    ga0->~Ga();
+#if 1
+    unsigned runs = 4;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+    runs = 3;
+    pop_size = 5'000;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+    runs = 2;
+    pop_size = 20'000;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
 #endif
 
 # if 0
@@ -165,7 +185,7 @@ int main() {
     ga1->~Ga();
 # endif
 
-# if 1
+# if 0
     unsigned percentage = 10;
     unsigned runs = 2;
     printf("Preceding %i percent exchange:\n", percentage);
