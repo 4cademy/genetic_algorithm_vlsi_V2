@@ -10,6 +10,7 @@ using namespace std::chrono;
 
 unsigned dim = 1'000;
 unsigned pop_size = 10'000;
+unsigned runs = 0;
 
 enum minmax {
     MIN,
@@ -120,8 +121,8 @@ void exchange_percentage(float** a_pop, float* a_fit, float** b_pop, float* b_fi
 int main() {
     auto start = high_resolution_clock::now();
 
-#if 1
-    unsigned runs = 0;
+#if 0
+    runs = 0;
     pop_size = 10'000;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
@@ -137,7 +138,7 @@ int main() {
         ga0->evolve(1000, false);
         ga0->~Ga();
     }
-    runs = 1;
+    runs = 3;
     pop_size = 20'000;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
@@ -186,9 +187,10 @@ int main() {
     ga1->~Ga();
 # endif
 
-# if 0
+# if 1
     unsigned percentage = 10;
-    unsigned runs = 2;
+    runs = 2;
+    pop_size = 5'000;
     printf("Preceding %i percent exchange:\n", percentage);
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
@@ -209,7 +211,7 @@ int main() {
     }
 
     percentage = 20;
-    runs = 3;
+    runs = 2;
     printf("Preceding %i percent exchange:\n", percentage);
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
@@ -230,7 +232,7 @@ int main() {
     }
 
     percentage = 30;
-    runs = 3;
+    runs = 2;
     printf("Preceding %i percent exchange:\n", percentage);
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
