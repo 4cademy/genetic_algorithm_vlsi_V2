@@ -121,33 +121,6 @@ void exchange_percentage(float** a_pop, float* a_fit, float** b_pop, float* b_fi
 int main() {
     auto start = high_resolution_clock::now();
 
-#if 0
-    runs = 0;
-    pop_size = 10'000;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-    runs = 0;
-    pop_size = 5'000;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-    runs = 3;
-    pop_size = 20'000;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-#endif
-
 # if 0
     Ga* ga0 = new Ga(dim, pop_size, -100, 100);
     Ga* ga1 = new Ga(dim, pop_size, -100, 100);
@@ -189,8 +162,8 @@ int main() {
 
 # if 1
     unsigned percentage = 10;
-    runs = 2;
-    pop_size = 5'000;
+    runs = 5;
+    pop_size = 1'024;
     printf("Preceding %i percent exchange:\n", percentage);
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
@@ -198,41 +171,63 @@ int main() {
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
         for (unsigned k = 0; k < 1; k++) {
-            ga0->evolve(600, false);
-            ga1->evolve(600, false);
+            ga0->evolve(200, false);
+            ga1->evolve(200, false);
 
             exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
         }
-        ga0->evolve(400, false);
-        ga1->evolve(400, false);
+        ga0->evolve(800, false);
+        ga1->evolve(800, false);
 
         ga0->~Ga();
         ga1->~Ga();
     }
 
     percentage = 20;
-    runs = 2;
-    printf("Preceding %i percent exchange:\n", percentage);
+    runs = 5;
+    pop_size = 1'024;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
         for (unsigned k = 0; k < 1; k++) {
-            ga0->evolve(600, false);
-            ga1->evolve(600, false);
+            ga0->evolve(200, false);
+            ga1->evolve(200, false);
 
             exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
         }
-        ga0->evolve(400, false);
-        ga1->evolve(400, false);
+        ga0->evolve(800, false);
+        ga1->evolve(800, false);
 
         ga0->~Ga();
         ga1->~Ga();
     }
 
     percentage = 30;
-    runs = 2;
+    runs = 5;
+    pop_size = 1'024;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga1 = new Ga(dim, pop_size, -100, 100);
+
+        for (unsigned k = 0; k < 1; k++) {
+            ga0->evolve(200, false);
+            ga1->evolve(200, false);
+
+            exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
+        }
+        ga0->evolve(800, false);
+        ga1->evolve(800, false);
+
+        ga0->~Ga();
+        ga1->~Ga();
+    }
+
+    percentage = 10;
+    runs = 5;
+    pop_size = 1'024;
     printf("Preceding %i percent exchange:\n", percentage);
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
@@ -240,18 +235,96 @@ int main() {
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
 
         for (unsigned k = 0; k < 1; k++) {
-            ga0->evolve(600, false);
-            ga1->evolve(600, false);
+            ga0->evolve(300, false);
+            ga1->evolve(300, false);
 
             exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
         }
-        ga0->evolve(400, false);
-        ga1->evolve(400, false);
+        ga0->evolve(700, false);
+        ga1->evolve(700, false);
 
         ga0->~Ga();
         ga1->~Ga();
     }
+
+    percentage = 20;
+    runs = 5;
+    pop_size = 1'024;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga1 = new Ga(dim, pop_size, -100, 100);
+
+        for (unsigned k = 0; k < 1; k++) {
+            ga0->evolve(300, false);
+            ga1->evolve(300, false);
+
+            exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
+        }
+        ga0->evolve(700, false);
+        ga1->evolve(700, false);
+
+        ga0->~Ga();
+        ga1->~Ga();
+    }
+
+    percentage = 30;
+    runs = 5;
+    pop_size = 1'024;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga1 = new Ga(dim, pop_size, -100, 100);
+
+        for (unsigned k = 0; k < 1; k++) {
+            ga0->evolve(300, false);
+            ga1->evolve(300, false);
+
+            exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
+        }
+        ga0->evolve(700, false);
+        ga1->evolve(700, false);
+
+        ga0->~Ga();
+        ga1->~Ga();
+    }
+
 # endif
+
+#if 0
+    runs = 5;
+    pop_size = 1'024;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+    runs = 5;
+    pop_size = 4'096;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+    runs = 5;
+    pop_size = 8'192;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+    runs = 5;
+    pop_size = 16'384;
+    for(unsigned i = 1; i <= runs; i++) {
+        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
+        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
+        ga0->evolve(1000, false);
+        ga0->~Ga();
+    }
+#endif
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop - start);
