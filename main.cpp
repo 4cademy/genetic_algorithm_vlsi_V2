@@ -160,7 +160,7 @@ int main() {
     ga1->~Ga();
 # endif
 
-# if 1
+# if 0
     unsigned percentage = 30;
     runs = 5;
     pop_size = 1'024;
@@ -207,37 +207,14 @@ int main() {
 
 # endif
 
-#if 0
-    runs = 5;
-    pop_size = 1'024;
+#if 1
+    runs = 1;
+    pop_size = 50;
     for(unsigned i = 1; i <= runs; i++) {
         printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
         Ga* ga0 = new Ga(dim, pop_size, -100, 100);
         ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-    runs = 5;
-    pop_size = 4'096;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-    runs = 5;
-    pop_size = 8'192;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-        ga0->~Ga();
-    }
-    runs = 5;
-    pop_size = 16'384;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
+
         ga0->~Ga();
     }
 #endif

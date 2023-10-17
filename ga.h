@@ -2,6 +2,8 @@
 // Created by Marcel Beyer on 11.09.2023.
 //
 
+#include <vector>
+
 #ifndef GENETIC_ALGORITHM_VLSI_V2_GA_H
 #define GENETIC_ALGORITHM_VLSI_V2_GA_H
 
@@ -31,7 +33,7 @@ private:
     float max_gene{};  // max value for each gene
     float* opt1{};
     float** mating_list{};  // contains the numbers of the individuals that are selected for mating (index0 mates with index1, index2 with index3, ...)
-    float* min_fitness_vector{};   // contains the minimum fitness of each generation
+    std::vector<float> min_fitness_vector;   // contains the minimum fitness of each generation
     long long start_time{}; // start time of the algorithm
 
     float function1(const float* individual) const;
