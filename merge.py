@@ -25,7 +25,7 @@ for csv_file in csv_files:
 # Save the combined data to a new CSV file
 combined_data.to_csv('combined_output.csv', index=False, header=False)
 
-# Prepend delimitor
+# Prepend delimiter
 with open('combined_output.csv', 'r+') as f:
     content = f.read()
     f.seek(0, 0)
