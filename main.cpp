@@ -164,9 +164,9 @@ int main() {
 
     unsigned percentage = 30;
     runs = 5;
-    pop_size = 512;
+    pop_size = 256;
     for (int i = 1; i<=runs ; i++) {
-        printf("Run: %i/%i exchange at 300\n", i, runs);
+        printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
         Ga *ga1 = new Ga(dim, pop_size, -100, 100);
         Ga *ga2 = new Ga(dim, pop_size, -100, 100);
@@ -175,16 +175,33 @@ int main() {
         Ga *ga5 = new Ga(dim, pop_size, -100, 100);
         Ga *ga6 = new Ga(dim, pop_size, -100, 100);
         Ga *ga7 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga8 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga9 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga10 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga11 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga12 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga13 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga14 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga15 = new Ga(dim, pop_size, -100, 100);
 
         // first evolution until 300 generations
-        ga0->evolve(300, false);
-        ga1->evolve(300, false);
-        ga2->evolve(300, false);
-        ga3->evolve(300, false);
-        ga4->evolve(300, false);
-        ga5->evolve(300, false);
-        ga6->evolve(300, false);
-        ga7->evolve(300, false);
+        ga0->evolve(200, false);
+        ga1->evolve(200, false);
+        ga2->evolve(200, false);
+        ga3->evolve(200, false);
+        ga4->evolve(200, false);
+        ga5->evolve(200, false);
+        ga6->evolve(200, false);
+        ga7->evolve(200, false);
+        ga8->evolve(200, false);
+        ga9->evolve(200, false);
+        ga10->evolve(200, false);
+        ga11->evolve(200, false);
+        ga12->evolve(200, false);
+        ga13->evolve(200, false);
+        ga14->evolve(200, false);
+        ga15->evolve(200, false);
+
 
 
         /*
@@ -212,7 +229,15 @@ int main() {
 
         exchange_percentage(ga6->pop, ga6->fitness, ga7->pop, ga7->fitness, percentage);
 
-        // generations up to 400
+        exchange_percentage(ga8->pop, ga8->fitness, ga9->pop, ga9->fitness, percentage);
+
+        exchange_percentage(ga10->pop, ga10->fitness, ga11->pop, ga11->fitness, percentage);
+
+        exchange_percentage(ga12->pop, ga12->fitness, ga13->pop, ga13->fitness, percentage);
+
+        exchange_percentage(ga14->pop, ga14->fitness, ga15->pop, ga15->fitness, percentage);
+
+        // generations up to 300
         ga0->evolve(100, false);
         ga1->evolve(100, false);
         ga2->evolve(100, false);
@@ -221,6 +246,14 @@ int main() {
         ga5->evolve(100, false);
         ga6->evolve(100, false);
         ga7->evolve(100, false);
+        ga8->evolve(100, false);
+        ga9->evolve(100, false);
+        ga10->evolve(100, false);
+        ga11->evolve(100, false);
+        ga12->evolve(100, false);
+        ga13->evolve(100, false);
+        ga14->evolve(100, false);
+        ga15->evolve(100, false);
 
 
         /*
@@ -246,7 +279,13 @@ int main() {
         exchange_percentage(ga4->pop, ga4->fitness, ga6->pop, ga6->fitness, percentage);
         exchange_percentage(ga5->pop, ga5->fitness, ga7->pop, ga7->fitness, percentage);
 
-        // generations up to 500
+        exchange_percentage(ga8->pop, ga8->fitness, ga10->pop, ga10->fitness, percentage);
+        exchange_percentage(ga9->pop, ga9->fitness, ga11->pop, ga11->fitness, percentage);
+
+        exchange_percentage(ga12->pop, ga12->fitness, ga14->pop, ga14->fitness, percentage);
+        exchange_percentage(ga13->pop, ga13->fitness, ga15->pop, ga15->fitness, percentage);
+
+        // generations up to 400
         ga0->evolve(100, false);
         ga1->evolve(100, false);
         ga2->evolve(100, false);
@@ -255,6 +294,14 @@ int main() {
         ga5->evolve(100, false);
         ga6->evolve(100, false);
         ga7->evolve(100, false);
+        ga8->evolve(100, false);
+        ga9->evolve(100, false);
+        ga10->evolve(100, false);
+        ga11->evolve(100, false);
+        ga12->evolve(100, false);
+        ga13->evolve(100, false);
+        ga14->evolve(100, false);
+        ga15->evolve(100, false);
 
 
         /*
@@ -279,6 +326,38 @@ int main() {
         exchange_percentage(ga2->pop, ga2->fitness, ga6->pop, ga6->fitness, percentage);
         exchange_percentage(ga3->pop, ga3->fitness, ga7->pop, ga7->fitness, percentage);
 
+        exchange_percentage(ga8->pop, ga8->fitness, ga12->pop, ga12->fitness, percentage);
+        exchange_percentage(ga9->pop, ga9->fitness, ga13->pop, ga13->fitness, percentage);
+        exchange_percentage(ga10->pop, ga10->fitness, ga14->pop, ga14->fitness, percentage);
+        exchange_percentage(ga11->pop, ga11->fitness, ga15->pop, ga15->fitness, percentage);
+
+        // generations up to 500
+        ga0->evolve(100, false);
+        ga1->evolve(100, false);
+        ga2->evolve(100, false);
+        ga3->evolve(100, false);
+        ga4->evolve(100, false);
+        ga5->evolve(100, false);
+        ga6->evolve(100, false);
+        ga7->evolve(100, false);
+        ga8->evolve(100, false);
+        ga9->evolve(100, false);
+        ga10->evolve(100, false);
+        ga11->evolve(100, false);
+        ga12->evolve(100, false);
+        ga13->evolve(100, false);
+        ga14->evolve(100, false);
+        ga15->evolve(100, false);
+
+        exchange_percentage(ga0->pop, ga0->fitness, ga8->pop, ga8->fitness, percentage);
+        exchange_percentage(ga1->pop, ga1->fitness, ga9->pop, ga9->fitness, percentage);
+        exchange_percentage(ga2->pop, ga2->fitness, ga10->pop, ga10->fitness, percentage);
+        exchange_percentage(ga3->pop, ga3->fitness, ga11->pop, ga11->fitness, percentage);
+        exchange_percentage(ga4->pop, ga4->fitness, ga12->pop, ga12->fitness, percentage);
+        exchange_percentage(ga5->pop, ga5->fitness, ga13->pop, ga13->fitness, percentage);
+        exchange_percentage(ga6->pop, ga6->fitness, ga14->pop, ga14->fitness, percentage);
+        exchange_percentage(ga7->pop, ga7->fitness, ga15->pop, ga15->fitness, percentage);
+
         // last evolution until 1'000 generations
         ga0->evolve(500, false);
         ga1->evolve(500, false);
@@ -288,6 +367,14 @@ int main() {
         ga5->evolve(500, false);
         ga6->evolve(500, false);
         ga7->evolve(500, false);
+        ga8->evolve(500, false);
+        ga9->evolve(500, false);
+        ga10->evolve(500, false);
+        ga11->evolve(500, false);
+        ga12->evolve(500, false);
+        ga13->evolve(500, false);
+        ga14->evolve(500, false);
+        ga15->evolve(500, false);
 
 
         ga0->~Ga();
@@ -298,6 +385,14 @@ int main() {
         ga5->~Ga();
         ga6->~Ga();
         ga7->~Ga();
+        ga8->~Ga();
+        ga9->~Ga();
+        ga10->~Ga();
+        ga11->~Ga();
+        ga12->~Ga();
+        ga13->~Ga();
+        ga14->~Ga();
+        ga15->~Ga();
     }
 
 
