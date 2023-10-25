@@ -149,7 +149,7 @@ Ga::~Ga() {
     // write results to file
     std::ofstream results_file;
     std::string filename = "results_" + std::to_string(Ga::start_time) + ".csv";
-    results_file.open(filename, std::ios_base::app);
+    results_file.open(R"(C:\Users\marce\OneDrive\Dokumente\ga_results\)" + filename, std::ios_base::app);
     for (float val : Ga::min_fitness_vector) {
         results_file << std::to_string(val) << "\n";
     }
