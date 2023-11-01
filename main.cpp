@@ -164,7 +164,7 @@ int main() {
 
     unsigned percentage = 30;
     runs = 5;
-    pop_size = 256;
+    pop_size = 128;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
@@ -183,316 +183,305 @@ int main() {
         Ga *ga13 = new Ga(dim, pop_size, -100, 100);
         Ga *ga14 = new Ga(dim, pop_size, -100, 100);
         Ga *ga15 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga16 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga17 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga18 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga19 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga20 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga21 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga22 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga23 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga24 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga25 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga26 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga27 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga28 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga29 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga30 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga31 = new Ga(dim, pop_size, -100, 100);
 
-        // first evolution until 150 generations
-        ga0->evolve(150, false);
-        ga1->evolve(150, false);
-        ga2->evolve(150, false);
-        ga3->evolve(150, false);
-        ga4->evolve(150, false);
-        ga5->evolve(150, false);
-        ga6->evolve(150, false);
-        ga7->evolve(150, false);
-        ga8->evolve(150, false);
-        ga9->evolve(150, false);
-        ga10->evolve(150, false);
-        ga11->evolve(150, false);
-        ga12->evolve(150, false);
-        ga13->evolve(150, false);
-        ga14->evolve(150, false);
-        ga15->evolve(150, false);
+        for(int j = 0; j<4; j++) {
+            // first evolution until 50 generations
+            ga0->evolve(50, false);
+            ga1->evolve(50, false);
+            ga2->evolve(50, false);
+            ga3->evolve(50, false);
+            ga4->evolve(50, false);
+            ga5->evolve(50, false);
+            ga6->evolve(50, false);
+            ga7->evolve(50, false);
+            ga8->evolve(50, false);
+            ga9->evolve(50, false);
+            ga10->evolve(50, false);
+            ga11->evolve(50, false);
+            ga12->evolve(50, false);
+            ga13->evolve(50, false);
+            ga14->evolve(50, false);
+            ga15->evolve(50, false);
+            ga16->evolve(50, false);
+            ga17->evolve(50, false);
+            ga18->evolve(50, false);
+            ga19->evolve(50, false);
+            ga20->evolve(50, false);
+            ga21->evolve(50, false);
+            ga22->evolve(50, false);
+            ga23->evolve(50, false);
+            ga24->evolve(50, false);
+            ga25->evolve(50, false);
+            ga26->evolve(50, false);
+            ga27->evolve(50, false);
+            ga28->evolve(50, false);
+            ga29->evolve(50, false);
+            ga30->evolve(50, false);
+            ga31->evolve(50, false);
 
-        /*
-            0 -+
-               |
-            1 -+
+            exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
 
-            2 -+
-               |
-            3 -+
+            exchange_percentage(ga2->pop, ga2->fitness, ga3->pop, ga3->fitness, percentage);
 
-            4 -+
-               |
-            5 -+
+            exchange_percentage(ga4->pop, ga4->fitness, ga5->pop, ga5->fitness, percentage);
 
-            6 -+
-               |
-            7 -+
-        */
-        exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
+            exchange_percentage(ga6->pop, ga6->fitness, ga7->pop, ga7->fitness, percentage);
 
-        exchange_percentage(ga2->pop, ga2->fitness, ga3->pop, ga3->fitness, percentage);
+            exchange_percentage(ga8->pop, ga8->fitness, ga9->pop, ga9->fitness, percentage);
 
-        exchange_percentage(ga4->pop, ga4->fitness, ga5->pop, ga5->fitness, percentage);
+            exchange_percentage(ga10->pop, ga10->fitness, ga11->pop, ga11->fitness, percentage);
 
-        exchange_percentage(ga6->pop, ga6->fitness, ga7->pop, ga7->fitness, percentage);
+            exchange_percentage(ga12->pop, ga12->fitness, ga13->pop, ga13->fitness, percentage);
 
-        exchange_percentage(ga8->pop, ga8->fitness, ga9->pop, ga9->fitness, percentage);
+            exchange_percentage(ga14->pop, ga14->fitness, ga15->pop, ga15->fitness, percentage);
 
-        exchange_percentage(ga10->pop, ga10->fitness, ga11->pop, ga11->fitness, percentage);
+            exchange_percentage(ga16->pop, ga16->fitness, ga17->pop, ga17->fitness, percentage);
 
-        exchange_percentage(ga12->pop, ga12->fitness, ga13->pop, ga13->fitness, percentage);
+            exchange_percentage(ga18->pop, ga18->fitness, ga19->pop, ga19->fitness, percentage);
 
-        exchange_percentage(ga14->pop, ga14->fitness, ga15->pop, ga15->fitness, percentage);
+            exchange_percentage(ga20->pop, ga20->fitness, ga21->pop, ga21->fitness, percentage);
 
-        // generations up to 300
-        ga0->evolve(150, false);
-        ga1->evolve(150, false);
-        ga2->evolve(150, false);
-        ga3->evolve(150, false);
-        ga4->evolve(150, false);
-        ga5->evolve(150, false);
-        ga6->evolve(150, false);
-        ga7->evolve(150, false);
-        ga8->evolve(150, false);
-        ga9->evolve(150, false);
-        ga10->evolve(150, false);
-        ga11->evolve(150, false);
-        ga12->evolve(150, false);
-        ga13->evolve(150, false);
-        ga14->evolve(150, false);
-        ga15->evolve(150, false);
+            exchange_percentage(ga22->pop, ga22->fitness, ga23->pop, ga23->fitness, percentage);
 
+            exchange_percentage(ga24->pop, ga24->fitness, ga25->pop, ga25->fitness, percentage);
 
-        /*
-            0 -+
-               |
-            1  | -+
-               |  |
-            2 -+  |
-                  |
-            3    -+
+            exchange_percentage(ga26->pop, ga26->fitness, ga27->pop, ga27->fitness, percentage);
 
-            4 -+
-               |
-            5  | -+
-               |  |
-            6 -+  |
-                  |
-            7    -+
-        */
-        exchange_percentage(ga0->pop, ga0->fitness, ga2->pop, ga2->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga3->pop, ga3->fitness, percentage);
+            exchange_percentage(ga28->pop, ga28->fitness, ga29->pop, ga29->fitness, percentage);
 
-        exchange_percentage(ga4->pop, ga4->fitness, ga6->pop, ga6->fitness, percentage);
-        exchange_percentage(ga5->pop, ga5->fitness, ga7->pop, ga7->fitness, percentage);
+            exchange_percentage(ga30->pop, ga30->fitness, ga31->pop, ga31->fitness, percentage);
 
-        exchange_percentage(ga8->pop, ga8->fitness, ga10->pop, ga10->fitness, percentage);
-        exchange_percentage(ga9->pop, ga9->fitness, ga11->pop, ga11->fitness, percentage);
+            // generations up to 100
+            ga0->evolve(50, false);
+            ga1->evolve(50, false);
+            ga2->evolve(50, false);
+            ga3->evolve(50, false);
+            ga4->evolve(50, false);
+            ga5->evolve(50, false);
+            ga6->evolve(50, false);
+            ga7->evolve(50, false);
+            ga8->evolve(50, false);
+            ga9->evolve(50, false);
+            ga10->evolve(50, false);
+            ga11->evolve(50, false);
+            ga12->evolve(50, false);
+            ga13->evolve(50, false);
+            ga14->evolve(50, false);
+            ga15->evolve(50, false);
+            ga16->evolve(50, false);
+            ga17->evolve(50, false);
+            ga18->evolve(50, false);
+            ga19->evolve(50, false);
+            ga20->evolve(50, false);
+            ga21->evolve(50, false);
+            ga22->evolve(50, false);
+            ga23->evolve(50, false);
+            ga24->evolve(50, false);
+            ga25->evolve(50, false);
+            ga26->evolve(50, false);
+            ga27->evolve(50, false);
+            ga28->evolve(50, false);
+            ga29->evolve(50, false);
+            ga30->evolve(50, false);
+            ga31->evolve(50, false);
 
-        exchange_percentage(ga12->pop, ga12->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga13->pop, ga13->fitness, ga15->pop, ga15->fitness, percentage);
+            exchange_percentage(ga0->pop, ga0->fitness, ga2->pop, ga2->fitness, percentage);
+            exchange_percentage(ga1->pop, ga1->fitness, ga3->pop, ga3->fitness, percentage);
 
-        // generations up to 400
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
+            exchange_percentage(ga4->pop, ga4->fitness, ga6->pop, ga6->fitness, percentage);
+            exchange_percentage(ga5->pop, ga5->fitness, ga7->pop, ga7->fitness, percentage);
 
+            exchange_percentage(ga8->pop, ga8->fitness, ga10->pop, ga10->fitness, percentage);
+            exchange_percentage(ga9->pop, ga9->fitness, ga11->pop, ga11->fitness, percentage);
 
-        /*
-            0 -+
-               |
-            1  | -+
-               |  |
-            2  |  | -+
-               |  |  | -+
-            3  |  |  |  |
-               |  |  |  |
-            4 -+  |  |  |
-                  |  |  |
-            5    -+  |  |
-                     |  |
-            6       -+  |
-                        |
-            7          -+
-         */
-        exchange_percentage(ga0->pop, ga0->fitness, ga4->pop, ga4->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga5->pop, ga5->fitness, percentage);
-        exchange_percentage(ga2->pop, ga2->fitness, ga6->pop, ga6->fitness, percentage);
-        exchange_percentage(ga3->pop, ga3->fitness, ga7->pop, ga7->fitness, percentage);
+            exchange_percentage(ga12->pop, ga12->fitness, ga14->pop, ga14->fitness, percentage);
+            exchange_percentage(ga13->pop, ga13->fitness, ga15->pop, ga15->fitness, percentage);
 
-        exchange_percentage(ga8->pop, ga8->fitness, ga12->pop, ga12->fitness, percentage);
-        exchange_percentage(ga9->pop, ga9->fitness, ga13->pop, ga13->fitness, percentage);
-        exchange_percentage(ga10->pop, ga10->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga11->pop, ga11->fitness, ga15->pop, ga15->fitness, percentage);
+            exchange_percentage(ga16->pop, ga16->fitness, ga18->pop, ga18->fitness, percentage);
+            exchange_percentage(ga17->pop, ga17->fitness, ga19->pop, ga19->fitness, percentage);
 
-        // generations up to 500
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
+            exchange_percentage(ga20->pop, ga20->fitness, ga22->pop, ga22->fitness, percentage);
+            exchange_percentage(ga21->pop, ga21->fitness, ga23->pop, ga23->fitness, percentage);
 
-        exchange_percentage(ga0->pop, ga0->fitness, ga8->pop, ga8->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga9->pop, ga9->fitness, percentage);
-        exchange_percentage(ga2->pop, ga2->fitness, ga10->pop, ga10->fitness, percentage);
-        exchange_percentage(ga3->pop, ga3->fitness, ga11->pop, ga11->fitness, percentage);
-        exchange_percentage(ga4->pop, ga4->fitness, ga12->pop, ga12->fitness, percentage);
-        exchange_percentage(ga5->pop, ga5->fitness, ga13->pop, ga13->fitness, percentage);
-        exchange_percentage(ga6->pop, ga6->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga7->pop, ga7->fitness, ga15->pop, ga15->fitness, percentage);
+            exchange_percentage(ga24->pop, ga24->fitness, ga26->pop, ga26->fitness, percentage);
+            exchange_percentage(ga25->pop, ga25->fitness, ga27->pop, ga27->fitness, percentage);
 
-        // generations up to 600
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
+            exchange_percentage(ga28->pop, ga28->fitness, ga30->pop, ga30->fitness, percentage);
+            exchange_percentage(ga29->pop, ga29->fitness, ga31->pop, ga31->fitness, percentage);
 
-        exchange_percentage(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, percentage);
+            // generations up to 150
+            ga0->evolve(50, false);
+            ga1->evolve(50, false);
+            ga2->evolve(50, false);
+            ga3->evolve(50, false);
+            ga4->evolve(50, false);
+            ga5->evolve(50, false);
+            ga6->evolve(50, false);
+            ga7->evolve(50, false);
+            ga8->evolve(50, false);
+            ga9->evolve(50, false);
+            ga10->evolve(50, false);
+            ga11->evolve(50, false);
+            ga12->evolve(50, false);
+            ga13->evolve(50, false);
+            ga14->evolve(50, false);
+            ga15->evolve(50, false);
+            ga16->evolve(50, false);
+            ga17->evolve(50, false);
+            ga18->evolve(50, false);
+            ga19->evolve(50, false);
+            ga20->evolve(50, false);
+            ga21->evolve(50, false);
+            ga22->evolve(50, false);
+            ga23->evolve(50, false);
+            ga24->evolve(50, false);
+            ga25->evolve(50, false);
+            ga26->evolve(50, false);
+            ga27->evolve(50, false);
+            ga28->evolve(50, false);
+            ga29->evolve(50, false);
+            ga30->evolve(50, false);
+            ga31->evolve(50, false);
 
-        exchange_percentage(ga2->pop, ga2->fitness, ga3->pop, ga3->fitness, percentage);
+            exchange_percentage(ga0->pop, ga0->fitness, ga4->pop, ga4->fitness, percentage);
+            exchange_percentage(ga1->pop, ga1->fitness, ga5->pop, ga5->fitness, percentage);
+            exchange_percentage(ga2->pop, ga2->fitness, ga6->pop, ga6->fitness, percentage);
+            exchange_percentage(ga3->pop, ga3->fitness, ga7->pop, ga7->fitness, percentage);
 
-        exchange_percentage(ga4->pop, ga4->fitness, ga5->pop, ga5->fitness, percentage);
+            exchange_percentage(ga8->pop, ga8->fitness, ga12->pop, ga12->fitness, percentage);
+            exchange_percentage(ga9->pop, ga9->fitness, ga13->pop, ga13->fitness, percentage);
+            exchange_percentage(ga10->pop, ga10->fitness, ga14->pop, ga14->fitness, percentage);
+            exchange_percentage(ga11->pop, ga11->fitness, ga15->pop, ga15->fitness, percentage);
 
-        exchange_percentage(ga6->pop, ga6->fitness, ga7->pop, ga7->fitness, percentage);
+            exchange_percentage(ga16->pop, ga16->fitness, ga20->pop, ga20->fitness, percentage);
+            exchange_percentage(ga17->pop, ga17->fitness, ga21->pop, ga21->fitness, percentage);
+            exchange_percentage(ga18->pop, ga18->fitness, ga22->pop, ga22->fitness, percentage);
+            exchange_percentage(ga19->pop, ga19->fitness, ga23->pop, ga23->fitness, percentage);
 
-        exchange_percentage(ga8->pop, ga8->fitness, ga9->pop, ga9->fitness, percentage);
+            exchange_percentage(ga24->pop, ga24->fitness, ga28->pop, ga28->fitness, percentage);
+            exchange_percentage(ga25->pop, ga25->fitness, ga29->pop, ga29->fitness, percentage);
+            exchange_percentage(ga26->pop, ga26->fitness, ga30->pop, ga30->fitness, percentage);
+            exchange_percentage(ga27->pop, ga27->fitness, ga31->pop, ga31->fitness, percentage);
 
-        exchange_percentage(ga10->pop, ga10->fitness, ga11->pop, ga11->fitness, percentage);
+            // generations up to 200
+            ga0->evolve(50, false);
+            ga1->evolve(50, false);
+            ga2->evolve(50, false);
+            ga3->evolve(50, false);
+            ga4->evolve(50, false);
+            ga5->evolve(50, false);
+            ga6->evolve(50, false);
+            ga7->evolve(50, false);
+            ga8->evolve(50, false);
+            ga9->evolve(50, false);
+            ga10->evolve(50, false);
+            ga11->evolve(50, false);
+            ga12->evolve(50, false);
+            ga13->evolve(50, false);
+            ga14->evolve(50, false);
+            ga15->evolve(50, false);
+            ga16->evolve(50, false);
+            ga17->evolve(50, false);
+            ga18->evolve(50, false);
+            ga19->evolve(50, false);
+            ga20->evolve(50, false);
+            ga21->evolve(50, false);
+            ga22->evolve(50, false);
+            ga23->evolve(50, false);
+            ga24->evolve(50, false);
+            ga25->evolve(50, false);
+            ga26->evolve(50, false);
+            ga27->evolve(50, false);
+            ga28->evolve(50, false);
+            ga29->evolve(50, false);
+            ga30->evolve(50, false);
+            ga31->evolve(50, false);
 
-        exchange_percentage(ga12->pop, ga12->fitness, ga13->pop, ga13->fitness, percentage);
+            exchange_percentage(ga0->pop, ga0->fitness, ga8->pop, ga8->fitness, percentage);
+            exchange_percentage(ga1->pop, ga1->fitness, ga9->pop, ga9->fitness, percentage);
+            exchange_percentage(ga2->pop, ga2->fitness, ga10->pop, ga10->fitness, percentage);
+            exchange_percentage(ga3->pop, ga3->fitness, ga11->pop, ga11->fitness, percentage);
+            exchange_percentage(ga4->pop, ga4->fitness, ga12->pop, ga12->fitness, percentage);
+            exchange_percentage(ga5->pop, ga5->fitness, ga13->pop, ga13->fitness, percentage);
+            exchange_percentage(ga6->pop, ga6->fitness, ga14->pop, ga14->fitness, percentage);
+            exchange_percentage(ga7->pop, ga7->fitness, ga15->pop, ga15->fitness, percentage);
 
-        exchange_percentage(ga14->pop, ga14->fitness, ga15->pop, ga15->fitness, percentage);
+            exchange_percentage(ga16->pop, ga16->fitness, ga24->pop, ga24->fitness, percentage);
+            exchange_percentage(ga17->pop, ga17->fitness, ga25->pop, ga25->fitness, percentage);
+            exchange_percentage(ga18->pop, ga18->fitness, ga26->pop, ga26->fitness, percentage);
+            exchange_percentage(ga19->pop, ga19->fitness, ga27->pop, ga27->fitness, percentage);
+            exchange_percentage(ga20->pop, ga20->fitness, ga28->pop, ga28->fitness, percentage);
+            exchange_percentage(ga21->pop, ga21->fitness, ga29->pop, ga29->fitness, percentage);
+            exchange_percentage(ga22->pop, ga22->fitness, ga30->pop, ga30->fitness, percentage);
+            exchange_percentage(ga23->pop, ga23->fitness, ga31->pop, ga31->fitness, percentage);
 
-        // generations up to 700
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
+            // generations up to 250
+            ga0->evolve(50, false);
+            ga1->evolve(50, false);
+            ga2->evolve(50, false);
+            ga3->evolve(50, false);
+            ga4->evolve(50, false);
+            ga5->evolve(50, false);
+            ga6->evolve(50, false);
+            ga7->evolve(50, false);
+            ga8->evolve(50, false);
+            ga9->evolve(50, false);
+            ga10->evolve(50, false);
+            ga11->evolve(50, false);
+            ga12->evolve(50, false);
+            ga13->evolve(50, false);
+            ga14->evolve(50, false);
+            ga15->evolve(50, false);
+            ga16->evolve(50, false);
+            ga17->evolve(50, false);
+            ga18->evolve(50, false);
+            ga19->evolve(50, false);
+            ga20->evolve(50, false);
+            ga21->evolve(50, false);
+            ga22->evolve(50, false);
+            ga23->evolve(50, false);
+            ga24->evolve(50, false);
+            ga25->evolve(50, false);
+            ga26->evolve(50, false);
+            ga27->evolve(50, false);
+            ga28->evolve(50, false);
+            ga29->evolve(50, false);
+            ga30->evolve(50, false);
+            ga31->evolve(50, false);
 
-        exchange_percentage(ga0->pop, ga0->fitness, ga2->pop, ga2->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga3->pop, ga3->fitness, percentage);
-
-        exchange_percentage(ga4->pop, ga4->fitness, ga6->pop, ga6->fitness, percentage);
-        exchange_percentage(ga5->pop, ga5->fitness, ga7->pop, ga7->fitness, percentage);
-
-        exchange_percentage(ga8->pop, ga8->fitness, ga10->pop, ga10->fitness, percentage);
-        exchange_percentage(ga9->pop, ga9->fitness, ga11->pop, ga11->fitness, percentage);
-
-        exchange_percentage(ga12->pop, ga12->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga13->pop, ga13->fitness, ga15->pop, ga15->fitness, percentage);
-
-        // generations up to 800
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
-
-        exchange_percentage(ga0->pop, ga0->fitness, ga4->pop, ga4->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga5->pop, ga5->fitness, percentage);
-        exchange_percentage(ga2->pop, ga2->fitness, ga6->pop, ga6->fitness, percentage);
-        exchange_percentage(ga3->pop, ga3->fitness, ga7->pop, ga7->fitness, percentage);
-
-        exchange_percentage(ga8->pop, ga8->fitness, ga12->pop, ga12->fitness, percentage);
-        exchange_percentage(ga9->pop, ga9->fitness, ga13->pop, ga13->fitness, percentage);
-        exchange_percentage(ga10->pop, ga10->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga11->pop, ga11->fitness, ga15->pop, ga15->fitness, percentage);
-
-        // generations up to 900
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
-
-        exchange_percentage(ga0->pop, ga0->fitness, ga8->pop, ga8->fitness, percentage);
-        exchange_percentage(ga1->pop, ga1->fitness, ga9->pop, ga9->fitness, percentage);
-        exchange_percentage(ga2->pop, ga2->fitness, ga10->pop, ga10->fitness, percentage);
-        exchange_percentage(ga3->pop, ga3->fitness, ga11->pop, ga11->fitness, percentage);
-        exchange_percentage(ga4->pop, ga4->fitness, ga12->pop, ga12->fitness, percentage);
-        exchange_percentage(ga5->pop, ga5->fitness, ga13->pop, ga13->fitness, percentage);
-        exchange_percentage(ga6->pop, ga6->fitness, ga14->pop, ga14->fitness, percentage);
-        exchange_percentage(ga7->pop, ga7->fitness, ga15->pop, ga15->fitness, percentage);
-
-        // last evolution until 1'000 generations
-        ga0->evolve(100, false);
-        ga1->evolve(100, false);
-        ga2->evolve(100, false);
-        ga3->evolve(100, false);
-        ga4->evolve(100, false);
-        ga5->evolve(100, false);
-        ga6->evolve(100, false);
-        ga7->evolve(100, false);
-        ga8->evolve(100, false);
-        ga9->evolve(100, false);
-        ga10->evolve(100, false);
-        ga11->evolve(100, false);
-        ga12->evolve(100, false);
-        ga13->evolve(100, false);
-        ga14->evolve(100, false);
-        ga15->evolve(100, false);
-
+            exchange_percentage(ga0->pop, ga0->fitness, ga16->pop, ga16->fitness, percentage);
+            exchange_percentage(ga1->pop, ga1->fitness, ga17->pop, ga17->fitness, percentage);
+            exchange_percentage(ga2->pop, ga2->fitness, ga18->pop, ga18->fitness, percentage);
+            exchange_percentage(ga3->pop, ga3->fitness, ga19->pop, ga19->fitness, percentage);
+            exchange_percentage(ga4->pop, ga4->fitness, ga20->pop, ga20->fitness, percentage);
+            exchange_percentage(ga5->pop, ga5->fitness, ga21->pop, ga21->fitness, percentage);
+            exchange_percentage(ga6->pop, ga6->fitness, ga22->pop, ga22->fitness, percentage);
+            exchange_percentage(ga7->pop, ga7->fitness, ga23->pop, ga23->fitness, percentage);
+            exchange_percentage(ga8->pop, ga8->fitness, ga24->pop, ga24->fitness, percentage);
+            exchange_percentage(ga9->pop, ga9->fitness, ga25->pop, ga25->fitness, percentage);
+            exchange_percentage(ga10->pop, ga10->fitness, ga26->pop, ga26->fitness, percentage);
+            exchange_percentage(ga11->pop, ga11->fitness, ga27->pop, ga27->fitness, percentage);
+            exchange_percentage(ga12->pop, ga12->fitness, ga28->pop, ga28->fitness, percentage);
+            exchange_percentage(ga13->pop, ga13->fitness, ga29->pop, ga29->fitness, percentage);
+            exchange_percentage(ga14->pop, ga14->fitness, ga30->pop, ga30->fitness, percentage);
+            exchange_percentage(ga15->pop, ga15->fitness, ga31->pop, ga31->fitness, percentage);
+        }
 
         ga0->~Ga();
         ga1->~Ga();
@@ -510,6 +499,22 @@ int main() {
         ga13->~Ga();
         ga14->~Ga();
         ga15->~Ga();
+        ga16->~Ga();
+        ga17->~Ga();
+        ga18->~Ga();
+        ga19->~Ga();
+        ga20->~Ga();
+        ga21->~Ga();
+        ga22->~Ga();
+        ga23->~Ga();
+        ga24->~Ga();
+        ga25->~Ga();
+        ga26->~Ga();
+        ga27->~Ga();
+        ga28->~Ga();
+        ga29->~Ga();
+        ga30->~Ga();
+        ga31->~Ga();
     }
 
 
