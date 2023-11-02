@@ -1,6 +1,7 @@
 import pandas as pd
 import glob
 import sys
+import os
 
 # Specify the directory where your CSV files are located
 input_dir = sys.argv[1]
@@ -23,12 +24,17 @@ for csv_file in csv_files:
     combined_data = pd.concat([combined_data, data], axis=1)
 
 # Save the combined data to a new CSV file
-combined_data.to_csv('combined_output.csv', index=False, header=False)
+combined_data.to_csv('combined_output_tmp.csv', index=False, header=False)
 
 # Prepend delimiter
-with open('combined_output.csv', 'r+') as f:
-    content = f.read()
-    f.seek(0, 0)
-    f.write('sep=,\n' + content)
+with open('combined_output_tmp.csv', 'r') as tmp:
+    with open('combined_output.csv', 'w') as outfile:
+        outfile.write('sep=,\n')
+        for line in tmp:
+            outfile.write(line)
+
+# Remove temporary file
+os.remove("combined_output_tmp.csv")
+
 
 print("Combined CSV file saved as 'combined_output.csv'")

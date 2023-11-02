@@ -164,7 +164,7 @@ int main() {
 
     unsigned percentage = 30;
     runs = 5;
-    pop_size = 128;
+    pop_size = 256;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
