@@ -177,10 +177,10 @@ int main() {
             ga_vector.push_back(new Ga(dim, pop_size, -100, 100));
         }
 
-        for(int j = 0; j<4; j++) {
+        for(int j = 0; j<20; j++) {
             // first evolution until 50 generations
             for(int sub_pop = 0; sub_pop < no_sub_pops; sub_pop++) {
-                ga_vector[sub_pop]->evolve(50, false);
+                ga_vector[sub_pop]->evolve(10, false);
             }
 
             // exchange the best individuals
@@ -190,7 +190,7 @@ int main() {
 
             // generations up to 100
             for(int sub_pop = 0; sub_pop < no_sub_pops; sub_pop++) {
-                ga_vector[sub_pop]->evolve(50, false);
+                ga_vector[sub_pop]->evolve(10, false);
             }
 
             // exchange the best individuals
@@ -201,7 +201,7 @@ int main() {
 
             // generations up to 150
             for(int sub_pop = 0; sub_pop < no_sub_pops; sub_pop++) {
-                ga_vector[sub_pop]->evolve(50, false);
+                ga_vector[sub_pop]->evolve(10, false);
             }
 
             // exchange the best individuals
@@ -214,7 +214,7 @@ int main() {
 
             // generations up to 200
             for(int sub_pop = 0; sub_pop < no_sub_pops; sub_pop++) {
-                ga_vector[sub_pop]->evolve(50, false);
+                ga_vector[sub_pop]->evolve(10, false);
             }
 
             // exchange the best individuals
@@ -231,7 +231,7 @@ int main() {
 
             // generations up to 250
             for(int sub_pop = 0; sub_pop < no_sub_pops; sub_pop++) {
-                ga_vector[sub_pop]->evolve(50, false);
+                ga_vector[sub_pop]->evolve(10, false);
             }
 
             // exchange the best individuals
