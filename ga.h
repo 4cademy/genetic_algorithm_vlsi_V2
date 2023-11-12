@@ -40,6 +40,7 @@ private:
     void compute_fitness();
     void selection_roulette();
     void crossover_uniform();
+    void mutation_normal_dist();
 };
 
 

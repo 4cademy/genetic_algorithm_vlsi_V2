@@ -236,6 +236,30 @@ void Ga::crossover_uniform() {
     }
 }
 
+void Ga::mutation_normal_dist() {
+    const auto p1 = std::chrono::system_clock::now();
+    long long timestamp = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
+
+    std::normal_distribution<float> normal_dist(0, (max_gene - min_gene)/6);    // standard deviation is 1/6 of the range -> 99.8% of the values are in the range
+    std::mt19937_64 normal_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
+
+    std::uniform_real_distribution<float> uni_dist(0, 1);
+    std::mt19937_64 uni_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp + 1);
+
+    for(unsigned i = 0; i < pop_size; i++) {
+        for(unsigned j = 0; j < dim; j++) {
+            if(uni_dist(uni_gen) < 0.01) {  // mutation rate of 1%
+                float mutated_gene = pop[i][j] + normal_dist(normal_gen);
+                while(mutated_gene < min_gene || mutated_gene > max_gene) {
+                    mutated_gene = pop[i][j] + normal_dist(normal_gen);
+                }
+                pop[i][j] = mutated_gene;
+            }
+        }
+    }
+
+}
+
 void Ga::evolve(int generations, bool break_on_convergence) {
     int i;
     unsigned convergence_counter = 0;
@@ -243,10 +267,13 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     for (i=0; i<generations; i++) {
         compute_fitness();
         Ga::min_fitness_vector.push_back(min_fitness);
+
         selection_roulette();
+
         crossover_uniform();
-        // ToDo mutation
-        // printf("%i. %e \n", i, min_fitness);
+
+        mutation_normal_dist();
+
         if(break_on_convergence){
             if (convergence < convergence_threshold) {
                 convergence_counter++;

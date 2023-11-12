@@ -11,7 +11,7 @@ using namespace std::chrono;
 
 unsigned dim = 1'000;
 unsigned pop_size = 10'000;
-unsigned runs = 0;
+unsigned runs = 5;
 
 enum minmax {
     MIN,
@@ -122,46 +122,20 @@ void exchange_percentage(float** a_pop, float* a_fit, float** b_pop, float* b_fi
 int main() {
     auto start = high_resolution_clock::now();
 
-# if 0
-    Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-    Ga* ga1 = new Ga(dim, pop_size, -100, 100);
+# if 1
+    runs = 1;
+    pop_size = 4096;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
 
-    for(unsigned k = 0; k < 1; k++) {
-        ga0->evolve(600, false);
-        ga1->evolve(600, false);
+        ga0->evolve(1000, false);
 
-        auto* fitness_copy = new float[pop_size];
-        for(unsigned i = 0; i < pop_size; i++) {
-            fitness_copy[i] = ga0->fitness[i];
-        }
-
-        auto** best_individuals = new float*[pop_size];
-        for(unsigned i = 0; i < pop_size; i++) {
-            best_individuals[i] = new float[dim];
-        }
-
-        copy_best_individuals(ga0->pop, ga0->fitness, ga1->pop, ga1->fitness, best_individuals);
-
-        for(unsigned i = 0; i < pop_size; i++) {
-            copy_individual(best_individuals, i, ga0->pop, i);
-            copy_individual(best_individuals, i, ga1->pop, i);
-        }
-
-        // free allocated memory
-        for(unsigned i = 0; i < pop_size; i++) {
-            delete[] best_individuals[i];
-        }
-        delete[] best_individuals;
-        delete[] fitness_copy;
+        ga0->~Ga();
     }
-    ga0->evolve(400, false);
-    ga1->evolve(400, false);
-
-    ga0->~Ga();
-    ga1->~Ga();
 # endif
 
-# if 1
+# if 0
 
     unsigned percentage = 30;
     runs = 5;
@@ -376,28 +350,6 @@ int main() {
 
 
 # endif
-
-#if 0
-    runs = 5;
-    pop_size = 256;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-
-    runs = 5;
-    pop_size = 128;
-    for(unsigned i = 1; i <= runs; i++) {
-        printf("Run: %i/%i at %i individuals\n", i, runs, pop_size);
-        Ga* ga0 = new Ga(dim, pop_size, -100, 100);
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-#endif
 
     auto stop = high_resolution_clock::now();
     auto duration = duration_cast<seconds>(stop - start);
