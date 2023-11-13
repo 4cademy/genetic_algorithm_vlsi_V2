@@ -248,7 +248,7 @@ void Ga::mutation_normal_dist() {
 
     for(unsigned i = 0; i < pop_size; i++) {
         for(unsigned j = 0; j < dim; j++) {
-            if(uni_dist(uni_gen) < 0.01) {  // mutation rate of 1%
+            if(uni_dist(uni_gen) < mutation_rate) {
                 float mutated_gene = pop[i][j] + normal_dist(normal_gen);
                 while(mutated_gene < min_gene || mutated_gene > max_gene) {
                     mutated_gene = pop[i][j] + normal_dist(normal_gen);
@@ -267,6 +267,8 @@ void Ga::evolve(int generations, bool break_on_convergence) {
     for (i=0; i<generations; i++) {
         compute_fitness();
         Ga::min_fitness_vector.push_back(min_fitness);
+
+        printf("%i: %e\n", i, min_fitness);
 
         selection_roulette();
 

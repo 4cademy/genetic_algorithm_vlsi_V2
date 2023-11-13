@@ -123,12 +123,37 @@ int main() {
     auto start = high_resolution_clock::now();
 
 # if 1
-    runs = 1;
+    runs = 5;
     pop_size = 4096;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, -100, 100);
 
+        ga0->mutation_rate = 0.001/100;  // 0.01% mutation rate
+        ga0->evolve(1000, false);
+
+        ga0->~Ga();
+    }
+
+    runs = 5;
+    pop_size = 4096;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+
+        ga0->mutation_rate = 0.0001/100;  // 0.01% mutation rate
+        ga0->evolve(1000, false);
+
+        ga0->~Ga();
+    }
+
+    runs = 5;
+    pop_size = 4096;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+
+        ga0->mutation_rate = 0.00001/100;  // 0.01% mutation rate
         ga0->evolve(1000, false);
 
         ga0->~Ga();
