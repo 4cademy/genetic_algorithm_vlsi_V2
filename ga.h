@@ -25,6 +25,7 @@ public:
     float best_fitness{};
     float convergence{};
     float mutation_rate{};
+    float mutation_deviation{};
 
 
 private:

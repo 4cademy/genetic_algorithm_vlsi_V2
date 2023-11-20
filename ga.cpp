@@ -136,6 +136,10 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, float min_gene, float max_gene) 
         mating_list[i] = new float[dim];
     }
 
+    // initialize mutation rate and deviation
+    mutation_rate = 0.01;
+    mutation_deviation = (max_gene - min_gene) / 6;
+
     // get start time
     const auto p1 = std::chrono::system_clock::now();
     Ga::start_time = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
@@ -240,7 +244,7 @@ void Ga::mutation_normal_dist() {
     const auto p1 = std::chrono::system_clock::now();
     long long timestamp = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
 
-    std::normal_distribution<float> normal_dist(0, (max_gene - min_gene)/6);    // standard deviation is 1/6 of the range -> 99.8% of the values are in the range
+    std::normal_distribution<float> normal_dist(0, mutation_deviation);    // standard deviation is 1/6 of the range -> 99.8% of the values are in the range
     std::mt19937_64 normal_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
 
     std::uniform_real_distribution<float> uni_dist(0, 1);

@@ -12,6 +12,8 @@ using namespace std::chrono;
 unsigned dim = 1'000;
 unsigned pop_size = 10'000;
 unsigned runs = 5;
+float min_gene = -100;
+float max_gene = 100;
 
 enum minmax {
     MIN,
@@ -127,37 +129,59 @@ int main() {
     pop_size = 4096;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
 
-        ga0->mutation_rate = 0.001/100;  // 0.01% mutation rate
+        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
+        ga0->mutation_deviation = (max_gene-min_gene)/6;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
         ga0->evolve(1000, false);
 
         ga0->~Ga();
     }
 
-    runs = 5;
-    pop_size = 4096;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
 
-        ga0->mutation_rate = 0.0001/100;  // 0.01% mutation rate
+        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
+        ga0->mutation_deviation = (max_gene-min_gene)/7;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
         ga0->evolve(1000, false);
 
         ga0->~Ga();
     }
 
-    runs = 5;
-    pop_size = 4096;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, -100, 100);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
 
-        ga0->mutation_rate = 0.00001/100;  // 0.01% mutation rate
+        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
+        ga0->mutation_deviation = (max_gene-min_gene)/8;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
         ga0->evolve(1000, false);
 
         ga0->~Ga();
     }
+
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
+
+        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
+        ga0->mutation_deviation = (max_gene-min_gene)/9;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
+        ga0->evolve(1000, false);
+
+        ga0->~Ga();
+    }
+
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
+
+        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
+        ga0->mutation_deviation = (max_gene-min_gene)/10;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
+        ga0->evolve(1000, false);
+
+        ga0->~Ga();
+    }
+
 # endif
 
 # if 0
