@@ -132,51 +132,7 @@ int main() {
         Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
 
         ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
-        ga0->mutation_deviation = (max_gene-min_gene)/6;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-
-    for (int i = 1; i<=runs ; i++) {
-        printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
-
-        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
-        ga0->mutation_deviation = (max_gene-min_gene)/7;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-
-    for (int i = 1; i<=runs ; i++) {
-        printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
-
-        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
-        ga0->mutation_deviation = (max_gene-min_gene)/8;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-
-    for (int i = 1; i<=runs ; i++) {
-        printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
-
-        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
-        ga0->mutation_deviation = (max_gene-min_gene)/9;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
-        ga0->evolve(1000, false);
-
-        ga0->~Ga();
-    }
-
-    for (int i = 1; i<=runs ; i++) {
-        printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
-
-        ga0->mutation_rate = 0.0001/100;  // 0.0001% mutation rate
-        ga0->mutation_deviation = (max_gene-min_gene)/10;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
+        ga0->mutation_deviation = (max_gene-min_gene)/12;  // (max_gene-min_gene)/6 -> 99.8% of the values are in the range [min_gene, max_gene]
         ga0->evolve(1000, false);
 
         ga0->~Ga();
