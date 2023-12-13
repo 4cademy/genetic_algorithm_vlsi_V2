@@ -125,8 +125,23 @@ int main() {
     auto start = high_resolution_clock::now();
 
 # if 1
-    runs = 5;
+    runs = 1;
     pop_size = 4096;
+    for (int i = 1; i<=runs ; i++) {
+        printf("Run: %i/%i\n", i, runs);
+        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
+
+        ga0->evolve_shade(3000);
+
+        ga0->~Ga();
+    }
+
+# endif
+
+
+# if 0
+    runs = 5;
+    pop_size = 1024;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);

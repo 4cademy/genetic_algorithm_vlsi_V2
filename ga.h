@@ -17,6 +17,7 @@ public:
     ~Ga();
     void load_data_f1();
     void evolve(int generations, bool break_on_convergence);
+    void evolve_shade(int generations);
 
     float** pop{};
     float* fitness{};
@@ -40,11 +41,21 @@ private:
     std::vector<float> min_fitness_vector;   // contains the minimum fitness of each generation
     long long start_time{}; // start time of the algorithm
 
+    unsigned history_size{};
+    unsigned history_replacement_index{};
+    float* cr_array{};
+    float* f_array{};
+    float** trial_pop{};
+    float* trial_fitness{};
+    float* trial_cr{};
+    float* trial_f{};
+
     float function1(const float* individual) const;
     void compute_fitness();
     void selection_roulette();
     void crossover_uniform();
     void mutation_normal_dist();
+    void generate_trial_vector(float* trial_vector, unsigned parent_vector_index, float &return_cr, float &return_f);
     void shade();
 };
 

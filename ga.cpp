@@ -144,6 +144,23 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, float min_gene, float max_gene) 
     mutation_rate = 0.01;
     mutation_deviation = (max_gene - min_gene) / 6;
 
+    // initialize shade
+    history_size = 100;
+    history_replacement_index = 0;
+    cr_array = new float[history_size];
+    f_array = new float[history_size];
+    for (unsigned i = 0; i < history_size; i++) {
+        cr_array[i] = 0.5;
+        f_array[i] = 0.5;
+    }
+    trial_pop = new float*[pop_size];
+    for (int i = 0; i < pop_size; i++) {
+        trial_pop[i] = new float[dim];
+    }
+    trial_fitness = new float[pop_size];
+    trial_cr = new float[pop_size];
+    trial_f = new float[pop_size];
+
     // get start time
     const auto p1 = std::chrono::system_clock::now();
     Ga::start_time = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
@@ -174,6 +191,15 @@ Ga::~Ga() {
     delete[] mating_list;
     delete[] opt1;
     delete[] fitness;
+
+    // free memory for shade
+    for (int i = 0; i < pop_size; i++) {
+        delete[] trial_pop[i];
+    }
+    delete[] trial_pop;
+    delete[] trial_cr;
+    delete[] trial_f;
+    delete[] trial_fitness;
     printf("Ga destroyed: %p\n", this);
 }
 
@@ -268,8 +294,103 @@ void Ga::mutation_normal_dist() {
 
 }
 
-void Ga::shade() {
+void Ga::generate_trial_vector(float* trial_vector, unsigned parent_vector_index, float &return_cr, float &return_f) {
+    const auto p1 = std::chrono::system_clock::now();
+    long long timestamp = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
 
+    std::uniform_int_distribution<unsigned> uni_int_dist(0, history_size-1);
+    std::mt19937_64 uni_int_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
+
+    unsigned r1 = uni_int_dist(uni_int_gen);
+    float cr = cr_array[r1];
+    float f = f_array[r1];
+
+    std::normal_distribution<float> normal_float_dist(cr, 0.1);
+    std::mt19937_64 normal_float_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp + 1);
+
+    std::cauchy_distribution<float> cauchy_dist(f, 0.1);
+    std::mt19937_64 cauchy_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp + 2);
+
+    std::uniform_real_distribution<float> uni_dist(0, 1);
+    std::mt19937_64 uni_gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp + 3);
+
+    cr = normal_float_dist(normal_float_gen);
+    if (cr < 0) {
+        cr = 0;
+    } else if (cr > 1) {
+        cr = 1;
+    }
+
+    f = cauchy_dist(cauchy_gen);
+    while (f < 0) {
+        f = cauchy_dist(cauchy_gen);
+    }
+    if (f > 1) {
+        f = 1;
+    }
+
+    // ToDo: implement current-to-pbest/1/bin
+    uni_int_dist = std::uniform_int_distribution<unsigned>(0, pop_size-1);
+    unsigned j = uni_int_dist(uni_int_gen);
+    unsigned donor1_index = uni_int_dist(uni_int_gen);
+    unsigned donor2_index = uni_int_dist(uni_int_gen);
+
+    while (donor1_index == parent_vector_index) {
+        donor1_index = uni_int_dist(uni_int_gen);
+    }
+
+    while ((donor2_index == donor1_index) || (donor2_index == parent_vector_index)) {
+        donor2_index = uni_int_dist(uni_int_gen);
+    }
+
+    for (unsigned i = 0; i < dim; i++) {
+        float old_gene = pop[parent_vector_index][i];
+        float diff = f * ((pop[Ga::min_fitness_index][i] - old_gene) + (pop[donor1_index][i] - pop[donor2_index][i]));
+        float new_gene = old_gene + diff;
+        if (new_gene < min_gene) {
+            new_gene = (min_gene + new_gene)/2;
+        } else if (new_gene > max_gene) {
+            new_gene = (max_gene + new_gene)/2;
+        }
+
+        if ((j == i) || (uni_dist(uni_gen) < cr)) {
+            trial_vector[i] = new_gene;
+        } else {
+            trial_vector[i] = old_gene;
+        }
+    }
+
+    return_cr = cr;
+    return_f = f;
+}
+
+void Ga::shade() {
+    for (int i = 0; i < pop_size; i++) {
+        generate_trial_vector(trial_pop[i], i, trial_cr[i], trial_f[i]);
+        trial_fitness[i] = function1(trial_pop[i]);
+    }
+
+    for (int i = 0; i < pop_size; i++) {
+        if (trial_fitness[i] < fitness[i]) {
+            for (int j = 0; j < dim; j++) {
+                pop[i][j] = trial_pop[i][j];
+            }
+            fitness[i] = trial_fitness[i];
+            if (trial_fitness[i] < min_fitness) {
+                min_fitness = trial_fitness[i];
+                min_fitness_index = i;
+            }
+            if (trial_fitness[i] < best_fitness) {
+                best_fitness = trial_fitness[i];
+            }
+            cr_array[history_replacement_index] = trial_cr[i];
+            f_array[history_replacement_index] = trial_f[i];
+            history_replacement_index++;
+            if (history_replacement_index >= history_size) {
+                history_replacement_index = 0;
+            }
+        }
+    }
 }
 
 void Ga::evolve(int generations, bool break_on_convergence) {
@@ -298,6 +419,20 @@ void Ga::evolve(int generations, bool break_on_convergence) {
                 convergence_counter = 0;
             }
         }
+    }
+
+    printf("Generations: %d \n", i);
+    printf("Best fitness: %e \n", Ga::best_fitness);
+}
+
+void Ga::evolve_shade(int generations) {
+    int i;
+    for (i=0; i<generations; i++) {
+        Ga::min_fitness_vector.push_back(min_fitness);
+
+        printf("%i: %e\n", i, min_fitness);
+
+        shade();
     }
 
     printf("Generations: %d \n", i);
