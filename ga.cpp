@@ -76,14 +76,18 @@ float Ga::function1(const float* individual) const {
 void Ga::compute_fitness(){
     fitness[0] = function1(pop[0]);
     min_fitness = function1(pop[0]);
+    min_fitness_index = 0;
     max_fitness = function1(pop[0]);
+    max_fitness_index = 0;
     #pragma omp parallel for default(none) shared(pop, fitness, pop_size) reduction(min:min_fitness) reduction(max:max_fitness)
     for (unsigned i=1; i<pop_size; i++) {
         fitness[i] = function1(pop[i]);
         if(fitness[i] < min_fitness) {
             min_fitness = fitness[i];
+            min_fitness_index = i;
         } else if (fitness[i] > max_fitness) {
             max_fitness = fitness[i];
+            max_fitness_index = i;
         }
     }
 
@@ -261,6 +265,10 @@ void Ga::mutation_normal_dist() {
             }
         }
     }
+
+}
+
+void Ga::shade() {
 
 }
 

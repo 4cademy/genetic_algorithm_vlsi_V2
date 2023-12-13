@@ -21,7 +21,9 @@ public:
     float** pop{};
     float* fitness{};
     float min_fitness{};
+    unsigned min_fitness_index{};
     float max_fitness{};
+    unsigned max_fitness_index{};
     float best_fitness{};
     float convergence{};
     float mutation_rate{};
@@ -43,6 +45,7 @@ private:
     void selection_roulette();
     void crossover_uniform();
     void mutation_normal_dist();
+    void shade();
 };
 
 
