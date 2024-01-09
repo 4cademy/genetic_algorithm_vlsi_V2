@@ -22,11 +22,13 @@ public:
     float** pop{};
     float* fitness{};
     float min_fitness{};
+    float prev_min_fitness{};
     unsigned min_fitness_index{};
     float max_fitness{};
     unsigned max_fitness_index{};
     float best_fitness{};
     float convergence{};
+    float convergence_counter{};
     float mutation_rate{};
     float mutation_deviation{};
 
@@ -49,6 +51,7 @@ private:
     float* trial_fitness{};
     float* trial_cr{};
     float* trial_f{};
+    float rate_of_improvement{};
 
     float function1(const float* individual) const;
     void compute_fitness();
@@ -57,6 +60,7 @@ private:
     void mutation_normal_dist();
     void generate_trial_vector(float* trial_vector, unsigned parent_vector_index, float &return_cr, float &return_f);
     void shade();
+    void reset_population();
 };
 
 

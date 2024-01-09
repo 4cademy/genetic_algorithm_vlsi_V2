@@ -364,7 +364,22 @@ void Ga::generate_trial_vector(float* trial_vector, unsigned parent_vector_index
     return_f = f;
 }
 
+void Ga::reset_population() {
+    const auto p1 = std::chrono::system_clock::now();
+    long long timestamp = std::chrono::duration_cast<std::chrono::microseconds>(p1.time_since_epoch()).count();
+    std::uniform_real_distribution<float> dist(Ga::min_gene, Ga::max_gene);
+    std::mt19937_64 gen(seed + std::hash<std::thread::id>{}(std::this_thread::get_id()) + timestamp);
+
+    for (unsigned i = 0; i < pop_size; i++) {
+        for (unsigned j = 0; j < dim; j++) {
+            pop[i][j] = dist(gen);
+        }
+    }
+}
+
 void Ga::shade() {
+    Ga::prev_min_fitness = Ga::min_fitness;
+
     for (int i = 0; i < pop_size; i++) {
         generate_trial_vector(trial_pop[i], i, trial_cr[i], trial_f[i]);
         trial_fitness[i] = function1(trial_pop[i]);
@@ -391,11 +406,19 @@ void Ga::shade() {
             }
         }
     }
+
+    rate_of_improvement = (Ga::prev_min_fitness - Ga::min_fitness) / Ga::prev_min_fitness;
+    printf("Rate of improvement: %f\n", rate_of_improvement);
+    if (rate_of_improvement < 0) {
+        Ga::convergence_counter++;
+    } else {
+        Ga::convergence_counter = 0;
+    }
 }
 
 void Ga::evolve(int generations, bool break_on_convergence) {
     int i;
-    unsigned convergence_counter = 0;
+    Ga::convergence_counter = 0;
     float convergence_threshold = 0.1;
     for (i=0; i<generations; i++) {
         compute_fitness();
@@ -411,12 +434,12 @@ void Ga::evolve(int generations, bool break_on_convergence) {
 
         if(break_on_convergence){
             if (convergence < convergence_threshold) {
-                convergence_counter++;
-                if (convergence_counter >= 10){
+                Ga::convergence_counter++;
+                if (Ga::convergence_counter >= 10){
                     break;
                 }
             } else {
-                convergence_counter = 0;
+                Ga::convergence_counter = 0;
             }
         }
     }
@@ -428,11 +451,18 @@ void Ga::evolve(int generations, bool break_on_convergence) {
 void Ga::evolve_shade(int generations) {
     int i;
     for (i=0; i<generations; i++) {
+        shade();
+
         Ga::min_fitness_vector.push_back(min_fitness);
 
         printf("%i: %e\n", i, min_fitness);
 
-        shade();
+        if (Ga::convergence_counter >= 3) {
+            reset_population();
+            compute_fitness();
+
+            Ga::convergence_counter = 0;
+        }
     }
 
     printf("Generations: %d \n", i);
