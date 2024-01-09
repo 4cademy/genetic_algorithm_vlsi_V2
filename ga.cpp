@@ -149,6 +149,10 @@ Ga::Ga(unsigned int dim, unsigned int pop_size, float min_gene, float max_gene) 
     history_replacement_index = 0;
     cr_array = new float[history_size];
     f_array = new float[history_size];
+    s_cr = new float[pop_size];
+    s_f = new float[pop_size];
+    s_delta_fitness = new float[pop_size];
+    s_index = 0;
     for (unsigned i = 0; i < history_size; i++) {
         cr_array[i] = 0.5;
         f_array[i] = 0.5;
@@ -377,6 +381,39 @@ void Ga::reset_population() {
     }
 }
 
+float weighted_arithmetic_mean(const float* values, const float* weights, unsigned max_index){
+    float total_weight = 0;
+    for(int i = 0; i <= max_index; i++){
+        total_weight += weights[i];
+    }
+
+    float mean = 0;
+    for(int i = 0; i <= max_index; i++){
+        mean += (values[i] * weights[i]/total_weight);
+    }
+    return mean;
+}
+
+float weighted_squared_mean(const float* values, const float* weights, unsigned max_index){
+    float total_weight = 0;
+    for(int i = 0; i <= max_index; i++){
+        total_weight += weights[i];
+    }
+
+    float mean = 0;
+    for(int i = 0; i <= max_index; i++){
+        mean += (values[i] * values[i] * weights[i]/total_weight);
+    }
+    return mean;
+}
+
+float weighted_lehmer_mean(const float* values, const float* weights, unsigned max_index){
+    float mean_of_squares = weighted_squared_mean(values, weights, max_index);
+    float arithmetic_mean = weighted_arithmetic_mean(values, weights, max_index);
+    float mean = mean_of_squares/arithmetic_mean;
+    return mean;
+}
+
 void Ga::shade() {
     Ga::prev_min_fitness = Ga::min_fitness;
 
@@ -387,6 +424,11 @@ void Ga::shade() {
 
     for (int i = 0; i < pop_size; i++) {
         if (trial_fitness[i] < fitness[i]) {
+            s_cr[s_index] = trial_cr[i];
+            s_f[s_index] = trial_f[i];
+            s_delta_fitness[s_index] = fabsf(fitness[i]-trial_fitness[i]);
+            s_index++;
+
             for (int j = 0; j < dim; j++) {
                 pop[i][j] = trial_pop[i][j];
             }
@@ -398,18 +440,27 @@ void Ga::shade() {
             if (trial_fitness[i] < best_fitness) {
                 best_fitness = trial_fitness[i];
             }
-            cr_array[history_replacement_index] = trial_cr[i];
-            f_array[history_replacement_index] = trial_f[i];
-            history_replacement_index++;
-            if (history_replacement_index >= history_size) {
-                history_replacement_index = 0;
-            }
         }
+    }
+
+    float mean_wa_cr = 0;
+    float mean_wl_f = 0;
+    if (s_index > 0){
+        mean_wa_cr = weighted_arithmetic_mean(s_cr, s_delta_fitness, s_index-1);       // weighted arithmetic mean
+        mean_wl_f = weighted_lehmer_mean(s_cr, s_delta_fitness, s_index-1);        // weighted Lehmer mean
+        cr_array[history_replacement_index] = mean_wa_cr;
+        f_array[history_replacement_index] = mean_wl_f;
+        history_replacement_index++;
+        if (history_replacement_index >= history_size) {
+            history_replacement_index = 0;
+        }
+
+        s_index = 0;
     }
 
     rate_of_improvement = (Ga::prev_min_fitness - Ga::min_fitness) / Ga::prev_min_fitness;
     printf("Rate of improvement: %f\n", rate_of_improvement);
-    if (rate_of_improvement < 0) {
+    if (rate_of_improvement < 0.001) {
         Ga::convergence_counter++;
     } else {
         Ga::convergence_counter = 0;
@@ -457,7 +508,7 @@ void Ga::evolve_shade(int generations) {
 
         printf("%i: %e\n", i, min_fitness);
 
-        if (Ga::convergence_counter >= 3) {
+        if (Ga::convergence_counter >= 100) {
             reset_population();
             compute_fitness();
 

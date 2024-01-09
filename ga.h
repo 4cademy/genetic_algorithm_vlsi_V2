@@ -47,6 +47,10 @@ private:
     unsigned history_replacement_index{};
     float* cr_array{};
     float* f_array{};
+    float* s_cr{};
+    float* s_f{};
+    float* s_delta_fitness{};
+    unsigned s_index{};
     float** trial_pop{};
     float* trial_fitness{};
     float* trial_cr{};
