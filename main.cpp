@@ -126,13 +126,13 @@ int main() {
     auto start = high_resolution_clock::now();
 
 # if 1
-    runs = 4;
-    pop_size = 100;
+    runs = 5;
+    pop_size = 200;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
         auto *ga0 = new ShadeGa(dim, pop_size, min_gene, max_gene);
 
-        ga0->evolve_shade(30000);
+        ga0->evolve_shade(15000);
 
         ga0->~ShadeGa();
     }
