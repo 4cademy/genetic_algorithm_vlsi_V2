@@ -460,7 +460,7 @@ void Ga::shade() {
 
     rate_of_improvement = (Ga::prev_min_fitness - Ga::min_fitness) / Ga::prev_min_fitness;
     printf("Rate of improvement: %f\n", rate_of_improvement);
-    if (rate_of_improvement < 0.001) {
+    if (rate_of_improvement < 0) {
         Ga::convergence_counter++;
     } else {
         Ga::convergence_counter = 0;

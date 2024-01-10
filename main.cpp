@@ -125,7 +125,7 @@ int main() {
     auto start = high_resolution_clock::now();
 
 # if 1
-    runs = 1;
+    runs = 4;
     pop_size = 100;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
