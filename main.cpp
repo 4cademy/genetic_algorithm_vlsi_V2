@@ -3,6 +3,7 @@
 //
 #include <cstdio>
 #include "ga.h"
+#include "shade.h"
 #include <chrono>
 #include <limits>
 #include <vector>
@@ -129,11 +130,11 @@ int main() {
     pop_size = 100;
     for (int i = 1; i<=runs ; i++) {
         printf("Run: %i/%i\n", i, runs);
-        Ga *ga0 = new Ga(dim, pop_size, min_gene, max_gene);
+        auto *ga0 = new ShadeGa(dim, pop_size, min_gene, max_gene);
 
         ga0->evolve_shade(30000);
 
-        ga0->~Ga();
+        ga0->~ShadeGa();
     }
 
 # endif

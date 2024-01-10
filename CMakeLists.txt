@@ -9,4 +9,6 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(.)
 
 add_executable(genetic_algorithm_vlsi_V2
-        main.cpp ga.cpp ga.h)
+        main.cpp ga.cpp ga.h
+        shade.cpp
+        shade.h)
